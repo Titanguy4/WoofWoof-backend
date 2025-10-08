@@ -1,10 +1,7 @@
-FROM quay.io/keycloak/keycloak:21.0.0
-USER keycloak
+FROM quay.io/keycloak/keycloak:26.4
 
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
-
-RUN /opt/keycloak/bin/kc.sh build
 
 EXPOSE 8080
 
