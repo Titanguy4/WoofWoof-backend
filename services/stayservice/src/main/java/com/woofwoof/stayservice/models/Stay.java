@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Stayservice {
+public class Stay {
     @GeneratedValue
     private Long Id;
 }
