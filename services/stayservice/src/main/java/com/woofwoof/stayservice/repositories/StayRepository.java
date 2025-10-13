@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.woofwoof.stayservice.models.Stay;
 
 @Repository
-public interface StayRepository extends JpaRepository <Stay, Stay> {
+public interface StayRepository extends JpaRepository <Stay, Long> {
     
 }

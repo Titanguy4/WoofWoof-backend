@@ -2,7 +2,7 @@ package com.woofwoof.stayservice.entities;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woofwoof.stay.services.StayService;
+import com.woofwoof.stayservice.services.StayService;
 
 @RestController
 public class StayController {
@@ -10,4 +10,6 @@ public class StayController {
     public StayController(StayService stayService) {
         this.stayService = stayService;
     }
+
+    
 }
