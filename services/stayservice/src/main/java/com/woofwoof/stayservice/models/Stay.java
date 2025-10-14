@@ -20,8 +20,7 @@ public class Stay {
 
     private String description;
 
-    private int[] localisation;
-    //private Long[] localisation;
+    private Long[] localisation;
 
     private Date startDate;
 
