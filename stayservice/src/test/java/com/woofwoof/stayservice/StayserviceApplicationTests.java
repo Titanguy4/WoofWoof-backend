@@ -8,6 +8,7 @@ class StayserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Do the tests
 	}
 
 }
