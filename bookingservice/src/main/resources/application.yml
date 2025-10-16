@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: booking-service
+  datasource:
+    url: jdbc:postgresql://${BOOKING_SERVICE_DB_HOST}:5432/${BOOKING_SERVICE_DB}
+    username: ${BOOKING_SERVICE_USER}
+    password: ${BOOKING_SERVICE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 8082
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+    initial-instance-info-replication-interval-seconds: 5
+    registry-fetch-interval-seconds: 5
