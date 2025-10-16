@@ -28,5 +28,37 @@ services:
     depends_on:
       - postgres
 
+  eureka:
+    container_name: eureka-server
+    build:
+      context: ./services/eurekaserver
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - woofwoof-network
+
+  apigateway:
+    container_name: api-gateway
+    build:
+      context: ./services/apigateway
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - woofwoof-network
+
+  stayservice:
+    container_name: stay-service
+    build:
+      context: ./services/stayservice
+      dockerfile: Dockerfile
+    networks:
+      - woofwoof-network
+
+networks:
+  woofwoof-network:
+    driver: bridge
+
 volumes:
   pgdata:
