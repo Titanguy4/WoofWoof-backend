@@ -1,13 +1,13 @@
-package com.woofwoof.stayservice;
+package com.woofwoof.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StayserviceApplication {
+public class ApigatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StayserviceApplication.class, args);
+		SpringApplication.run(ApigatewayApplication.class, args);
 	}
 
 }
