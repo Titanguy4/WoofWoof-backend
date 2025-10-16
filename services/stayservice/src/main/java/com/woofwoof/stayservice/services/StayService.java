@@ -30,22 +30,11 @@ public class StayService {
         stayRepository.deleteById(id);
     }
 
-    public Stay updateStay(Long id, Stay updatedStay) {
-        return stayRepository.findById(id)
-        .map(stay -> {
-            stay.setTitle(updatedStay.getTitle());
-            stay.setDescription(updatedStay.getDescription());
-            stay.setLocalisation(updatedStay.getLocalisation());
-            stay.setStartDate(updatedStay.getStartDate());
-            stay.setEndDate(updatedStay.getEndDate());
-            stay.setStatus(updatedStay.getStatus());
-            stay.setActivities(updatedStay.getActivities());
-            stay.setLearningSkills(updatedStay.getLearningSkills());
-            stay.setMeals(updatedStay.getMeals());
-            stay.setAccomodations(updatedStay.getAccomodations());
-            stay.setPhotos(updatedStay.getPhotos());
+    public Stay updateStay(Stay stay) {
+        if(!stayRepository.existsById(stay.getId_stay())) {
+            throw new RuntimeException("Stay with id " + stay.getId_stay() + " does not exist.");
+        } else {
             return stayRepository.save(stay);
-        })
-        .orElseThrow(() -> new RuntimeException("Stay not found"));
+        }
     }
 }

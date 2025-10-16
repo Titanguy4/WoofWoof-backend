@@ -42,8 +42,8 @@ public class StayController {
     }
     
     @PutMapping("/{id}")
-    public Stay updateStay(@PathVariable Long id, @RequestBody Stay updatedStay) {
-        return stayService.updateStay(id, updatedStay);
+    public Stay updateStay(@RequestBody Stay updatedStay) {
+        return stayService.updateStay(updatedStay);
     }
     
     @DeleteMapping("/{id}")

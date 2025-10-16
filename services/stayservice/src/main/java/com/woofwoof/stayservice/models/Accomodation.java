@@ -2,6 +2,7 @@ package com.woofwoof.stayservice.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
@@ -11,4 +12,7 @@ public class Accomodation {
     private Long id_accomodation;
 
     public String label;
+
+    @ManyToOne
+    private Stay stay;
 }
