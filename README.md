@@ -17,3 +17,4 @@ If you want to delete all the microservices and databases
 docker compose -f docker-compose.dev.yml down -v
 ```
 ! don't forget to add microservices to modify docker compose and a Dockerfile when you create ones
+! also fill the .env file with credentials
