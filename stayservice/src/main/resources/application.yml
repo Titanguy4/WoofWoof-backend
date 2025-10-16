@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: stay-service
+  datasource:
+    url: jdbc:postgresql://${STAY_SERVICE_DB_HOST}:5432/${STAY_SERVICE_DB}
+    username: ${STAY_SERVICE_USER}
+    password: ${STAY_SERVICE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 8081
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+    initial-instance-info-replication-interval-seconds: 5
+    registry-fetch-interval-seconds: 5
+
