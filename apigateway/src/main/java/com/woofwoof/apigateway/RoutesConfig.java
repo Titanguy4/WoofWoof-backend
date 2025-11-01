@@ -1,4 +1,4 @@
-package com.woofwoof.apigateway;
+/* package com.woofwoof.apigateway;
 
 import static org.springframework.cloud.gateway.server.mvc.filter.BeforeFilterFunctions.uri;
 import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
@@ -11,6 +11,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 
 @Configuration
 public class RoutesConfig {
+
     @Bean
     public RouterFunction<ServerResponse> stayServiceRoutes() {
         return GatewayRouterFunctions.route("stay-service")
@@ -18,4 +19,14 @@ public class RoutesConfig {
                 .before(uri("lb://stay-service"))
                 .build();
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> bookingServiceRoutes() {
+        return GatewayRouterFunctions.route("booking-service")
+                .GET("/bookings/**", http())   // Récupérer toutes les réservations
+                .POST("/bookings/**", http())  // Créer une réservation
+                .before(uri("lb://booking-service"))
+                .build();
+    }
 }
+*/

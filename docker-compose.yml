@@ -10,7 +10,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "5432:5432"
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.0
@@ -31,7 +31,7 @@ services:
   eureka:
     container_name: eureka-server
     build:
-      context: ./services/eurekaserver
+      context: ./eurekaserver
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
@@ -41,17 +41,25 @@ services:
   apigateway:
     container_name: api-gateway
     build:
-      context: ./services/apigateway
+      context: ./apigateway
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - "8080:8080"
     networks:
       - woofwoof-network
 
   stayservice:
     container_name: stay-service
     build:
-      context: ./services/stayservice
+      context: ./stayservice
+      dockerfile: Dockerfile
+    networks:
+      - woofwoof-network
+
+  bookingservice:
+    container_name: booking-service
+    build:
+      context: ./bookingservice
       dockerfile: Dockerfile
     networks:
       - woofwoof-network

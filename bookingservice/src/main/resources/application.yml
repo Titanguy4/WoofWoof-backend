@@ -1,22 +1,34 @@
 spring:
   application:
     name: booking-service
+
   datasource:
-    url: jdbc:postgresql://${BOOKING_SERVICE_DB_HOST}:5432/${BOOKING_SERVICE_DB}
-    username: ${BOOKING_SERVICE_USER}
-    password: ${BOOKING_SERVICE_PASSWORD}
+    url: jdbc:postgresql://${BOOKING_SERVICE_DB_HOST:bookingservice-db}:5432/${BOOKING_SERVICE_DB:bookingservice}
+    username: ${BOOKING_SERVICE_USER:bookinguser}
+    password: ${BOOKING_SERVICE_PASSWORD:bookingpass}
     driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   port: 8082
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: booking-service
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka-server:8761/eureka
-    initial-instance-info-replication-interval-seconds: 5
-    registry-fetch-interval-seconds: 5
+      defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.springframework: info

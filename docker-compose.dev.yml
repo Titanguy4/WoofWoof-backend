@@ -1,4 +1,5 @@
 services:
+  # --- EUREKA SERVER ---
   eureka-server:
     build:
       context: ./eurekaserver
@@ -9,6 +10,7 @@ services:
     networks:
       - woofwoof-network
 
+  # --- API GATEWAY ---
   api-gateway:
     build:
       context: ./apigateway
@@ -16,9 +18,15 @@ services:
     container_name: api-gateway-dev
     ports:
       - "8080:8080"
+    depends_on:
+      - eureka-server   # ✅ attend que Eureka soit lancé avant de démarrer
+    restart: always
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/  # pour s’assurer que la variable est disponible
     networks:
       - woofwoof-network
 
+  # --- STAY SERVICE ---
   stay-service:
     build:
       context: ./stayservice
@@ -28,6 +36,9 @@ services:
       - "8081:8081"
     env_file:
       - ./.env
+    depends_on:
+      - eureka-server
+      - stayservice-db
     networks:
       - woofwoof-network
 
@@ -45,6 +56,7 @@ services:
     networks:
       - woofwoof-network
 
+  # --- BOOKING SERVICE ---
   booking-service:
     build:
       context: ./bookingservice
@@ -54,6 +66,9 @@ services:
       - ./.env
     ports:
       - "8082:8082"
+    depends_on:
+      - eureka-server
+      - bookingservice-db
     networks:
       - woofwoof-network
 
@@ -71,6 +86,7 @@ services:
     networks:
       - woofwoof-network
 
+  # --- KEYCLOAK ---
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.0
     container_name: keycloak
@@ -86,6 +102,8 @@ services:
       - "8000:8080"
     depends_on:
       - keycloak-db
+    networks:
+      - woofwoof-network
 
   keycloak-db:
     image: postgres:15-alpine
@@ -98,8 +116,11 @@ services:
     volumes:
       - keycloak_pgdata:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5435:5432   # ✅ éviter le conflit avec les autres Postgres
+    networks:
+      - woofwoof-network
 
+# --- VOLUMES & NETWORK ---
 volumes:
   stay_pgdata:
   booking_pgdata:
