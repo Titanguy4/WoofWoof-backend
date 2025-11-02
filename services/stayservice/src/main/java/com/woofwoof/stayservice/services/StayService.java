@@ -37,4 +37,22 @@ public class StayService {
             return stayRepository.save(stay);
         }
     }
+
+    public List<Meal> getMealsByStayId(Long stayId) {
+        return stayRepository.findMealsByStayId(stayId);
+    }
+
+    public List<Accomodation> getAccommodationsByStayId(Long stayId) {
+        return stayRepository.findAccommodationsByStayId(stayId);
+    }
+
+    public List<Activity> getActivitiesByStayId(Long stayId) {
+        return stayRepository.findActivitiesByStayId(stayId);
+    }
+
+    public List<LearningSkill> getLearningSkillsByStayId(Long stayId) {
+        return stayRepository.findLearningSkillsByStayId(stayId);
+    }
+
+    
 }

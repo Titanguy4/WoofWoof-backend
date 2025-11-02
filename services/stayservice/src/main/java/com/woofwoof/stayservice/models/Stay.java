@@ -1,10 +1,11 @@
 package com.woofwoof.stayservice.models;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,47 +24,76 @@ import java.util.List;
 public class Stay {
     @Id
     @GeneratedValue
+    @Column(nullable = false)
     private Long id_stay;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private Long[] localisation;
 
+    @Column(nullable = false)
     private Date startDate;
 
+    @Column(nullable = false)
     private Date endDate;
 
+    @Column(nullable = false)
     private Boolean status;
-    
+
+    @Column(nullable = false)
+    private Long wooferId;
+
+    private Long bookingId;
+
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stay_id", nullable = false)
+    @Column(nullable = false)
     @Builder.Default
     private List<Activity> activities = new ArrayList<>();
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stay_id", nullable = false)
+    @Column(nullable = false)
     @Builder.Default
     private List<LearningSkill> learningSkills = new ArrayList<>();
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)    
+    @JoinColumn(name = "stay_id", nullable = false)
+    @Column(nullable = false)
     @Builder.Default
     private List<Meal> meals = new ArrayList<>();
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)    
+    @JoinColumn(name = "stay_id", nullable = false)
+    @Column(nullable = false)
     @Builder.Default
-    private List<Accomodation> accommodations = new ArrayList<>();
-    
-    @ElementCollection
-    private List<String> photos;
+    private List<Accomodation> accomodations = new ArrayList<>();
 
-    public void addAccommodation(Accomodation accommodation) {
-        accommodations.add(accommodation);
-        accommodation.setStay(this);
-    }
+    @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stay_id", nullable = false)
+    @Column(nullable = false)
+    @Builder.Default
+    private List<Review> reviews = new ArrayList<>();
     
-    public void removeAccommodation(Accomodation accommodation) {
-        accommodations.remove(accommodation);
-        accommodation.setStay(null);
+    @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)    
+    @JoinColumn(name = "stay_id", nullable = false)
+    @Column(nullable = false)
+    private List<Long> photoId;
+
+
+    public void addAccommodation(Accomodation accomodation) {
+        accomodations.add(accomodation);
+        accomodation.setStay(this);
+    }
+
+    public void removeAccommodation(Accomodation accomodation) {
+        accomodations.remove(accomodation);
+        accomodation.setStay(null);
     }
 
     public void addActivity(Activity activity) {
@@ -94,5 +124,23 @@ public class Stay {
     public void removeMeal(Meal meal) {
         meals.remove(meal);
         meal.setStay(null);
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
+        review.setStay(this);
+    }
+
+    public void removeReview(Review review) {
+        reviews.remove(review);
+        review.setStay(null);
+    }
+
+    public void addPhotoId(Long photoId) {
+        this.photoId.add(photoId);
+    }
+
+    public void removePhotoId(Long photoId) {
+        this.photoId.remove(photoId);
     }
 }
