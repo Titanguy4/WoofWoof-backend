@@ -13,8 +13,11 @@ public class Booking {
 
     private Long missionId;
     private Long userId;
-    private LocalDate requestedDate;
+    private LocalDate startRequestedDate;
+    private LocalDate endRequestedDate;
     private String status;
+    private String email;
+    private String number;
 
     // --- Getters et Setters ---
     public Long getId() { return id; }
@@ -26,9 +29,18 @@ public class Booking {
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
 
-    public LocalDate getRequestedDate() { return requestedDate; }
-    public void setRequestedDate(LocalDate requestedDate) { this.requestedDate = requestedDate; }
+    public LocalDate getStartRequestedDate() { return startRequestedDate; }
+    public void setRequestedDate(LocalDate startRequestedDate) { this.startRequestedDate = startRequestedDate; }
+
+    public LocalDate getEndRequestedDate() { return endRequestedDate; }
+    public void setEndRequestedDate(LocalDate endRequestedDate) { this.endRequestedDate = endRequestedDate; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getNumber() { return number; }
+    public void setNumber(String number) { this.number = number; }
 }
