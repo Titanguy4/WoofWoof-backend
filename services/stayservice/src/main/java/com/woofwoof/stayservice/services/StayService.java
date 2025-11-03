@@ -18,10 +18,6 @@ public class StayService {
         return stayRepository.save(stay);
     }
 
-    public List<Stay> getAllStays() {
-        return stayRepository.findAll();
-    }
-
     public Optional<Stay> getStayById(Long id) {
         return stayRepository.findById(id);
     }
@@ -54,5 +50,8 @@ public class StayService {
         return stayRepository.findLearningSkillsByStayId(stayId);
     }
 
+    public List<Review> getReviewsByStayId(Long stayId) {
+        return stayRepository.findReviewsByStayId(stayId);
+    }
     
 }

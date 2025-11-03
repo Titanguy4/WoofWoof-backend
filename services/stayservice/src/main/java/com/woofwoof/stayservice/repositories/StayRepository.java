@@ -8,11 +8,12 @@ import com.woofwoof.stayservice.models.Accomodation;
 import com.woofwoof.stayservice.models.Activity;
 import com.woofwoof.stayservice.models.LearningSkill;
 import com.woofwoof.stayservice.models.Meal;
+import com.woofwoof.stayservice.models.Review;
 
 import com.woofwoof.stayservice.models.Stay;
 
 @Repository
-public interface StayRepository extends JpaRepository <Stay, Long> {
+public interface StayRepository extends JpaRepository<Stay, Long> {
 
     List<Meal> findMealsByStayId(Long stayId);
 
@@ -35,5 +36,6 @@ public interface StayRepository extends JpaRepository <Stay, Long> {
     List<Stay> findByStartDateAfter(java.util.Date startDate);
 
     List<Stay> findByEndDateBefore(java.util.Date endDate);
-    
+
+    List<Review> findReviewsByStayId(Long stayId);
 }

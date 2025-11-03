@@ -64,7 +64,6 @@ public class Stay {
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)    
     @JoinColumn(name = "stay_id", nullable = false)
-    @Column(nullable = false)
     @Builder.Default
     private List<Meal> meals = new ArrayList<>();
 
@@ -76,7 +75,6 @@ public class Stay {
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "stay_id", nullable = false)
-    @Column(nullable = false)
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
     
