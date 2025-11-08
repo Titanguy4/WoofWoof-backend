@@ -48,13 +48,41 @@ services:
     networks:
       - woofwoof-network
 
+  stay-db:
+    image: ${POSTGRES_IMAGE}
+    container_name: stay-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${STAY_SERVICE_DB}
+      POSTGRES_USER: ${STAY_SERVICE_USER}
+      POSTGRES_PASSWORD: ${STAY_SERVICE_PASSWORD}
+    volumes:
+      - stay_data:/var/lib/postgresql/data
+    networks:
+      - ${NETWORK_NAME}
+
   stayservice:
-    container_name: stay-service
     build:
       context: ./stayservice
       dockerfile: Dockerfile
+    container_name: stay-service
+    depends_on:
+      - stay-db
+      - eureka
+    ports:
+      - "${STAY_SERVICE_PORT}:8080"
+    environment:
+      STAY_SERVICE_DB_HOST: stay-db
+      STAY_SERVICE_DB: ${STAY_SERVICE_DB}
+      STAY_SERVICE_USER: ${STAY_SERVICE_USER}
+      STAY_SERVICE_PASSWORD: ${STAY_SERVICE_PASSWORD}
+      STAY_SERVICE_PORT: ${STAY_SERVICE_PORT}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
     networks:
-      - woofwoof-network
+      - ${NETWORK_NAME}
+
+
+
 
   bookingservice:
     container_name: booking-service
@@ -70,3 +98,4 @@ networks:
 
 volumes:
   pgdata:
+  stay_data:
