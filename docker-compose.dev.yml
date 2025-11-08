@@ -19,7 +19,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - eureka-server   # ✅ attend que Eureka soit lancé avant de démarrer
+      - eureka-server
     restart: always
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/  # pour s’assurer que la variable est disponible
@@ -39,6 +39,13 @@ services:
     depends_on:
       - eureka-server
       - stayservice-db
+    environment:
+      STAY_SERVICE_DB_HOST: stayservice-db
+      STAY_SERVICE_DB: ${STAY_SERVICE_DB}
+      STAY_SERVICE_USER: ${STAY_SERVICE_USER}
+      STAY_SERVICE_PASSWORD: ${STAY_SERVICE_PASSWORD}
+      STAY_SERVICE_PORT: 8081
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
       - woofwoof-network
 
@@ -52,9 +59,10 @@ services:
     volumes:
       - stay_pgdata:/var/lib/postgresql/data
     ports:
-      - ${STAY_SERVICE_DB_PORT}:5432
+      - "5433:5432"
     networks:
       - woofwoof-network
+
 
   # --- BOOKING SERVICE ---
   booking-service:
@@ -116,7 +124,7 @@ services:
     volumes:
       - keycloak_pgdata:/var/lib/postgresql/data
     ports:
-      - 5435:5432   # ✅ éviter le conflit avec les autres Postgres
+      - 5435:5432
     networks:
       - woofwoof-network
 

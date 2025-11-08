@@ -36,6 +36,12 @@ public class Stay {
     @Column(nullable = false)
     private Long[] localisation;
 
+    @Column
+    private String department;
+
+    @Column
+    private String region;
+
     @Column(nullable = false)
     private Date startDate;
 

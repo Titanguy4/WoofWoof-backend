@@ -9,12 +9,21 @@ import java.util.Optional;
 @Service
 public class StayService {
     private final StayRepository stayRepository;
-    
-    public StayService(StayRepository stayRepository) {
+    private final GeocodingService reverseGeocodingService;
+
+    public StayService(StayRepository stayRepository, GeocodingService reverseGeocodingService) {
         this.stayRepository = stayRepository;
+        this.reverseGeocodingService = reverseGeocodingService;
     }
 
     public Stay createStay(Stay stay) {
+        if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
+            double lon = stay.getLocalisation()[0];
+            double lat = stay.getLocalisation()[1];
+            GeocodingService.LocationInfo info = reverseGeocodingService.getLocationInfo(lat, lon);
+            stay.setDepartment(info.getDepartment());
+            stay.setRegion(info.getRegion());
+        }
         return stayRepository.save(stay);
     }
 
