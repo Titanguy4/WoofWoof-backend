@@ -3,9 +3,9 @@ spring:
     name: stay-service
 
   datasource:
-    url: jdbc:postgresql://${STAY_SERVICE_DB_HOST:stay-db}:5432/${STAY_SERVICE_DB:staydb}
-    username: ${STAY_SERVICE_USER:stayuser}
-    password: ${STAY_SERVICE_PASSWORD:staypass}
+    url: jdbc:postgresql://${STAY_SERVICE_DB_HOST:stayservice-db}:5432/${STAY_SERVICE_DB:staydb}
+    username: ${STAY_SERVICE_DB_USER:stayuser}
+    password: ${STAY_SERVICE_DB_PASSWORD:staypass}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -26,4 +26,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eureka:8761/eureka/}
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eureka-server:8761/eureka/}

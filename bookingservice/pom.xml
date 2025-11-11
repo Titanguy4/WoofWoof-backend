@@ -10,9 +10,7 @@
 	</parent>
 	<groupId>com.woofwoof</groupId>
 	<artifactId>bookingservice</artifactId>
-	<artifactId>bookingservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bookingservice</name>
 	<name>bookingservice</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>

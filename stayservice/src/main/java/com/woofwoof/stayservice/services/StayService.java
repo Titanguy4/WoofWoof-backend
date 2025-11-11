@@ -17,6 +17,9 @@ public class StayService {
     }
 
     public Stay createStay(Stay stay) {
+        if (stay.getTitle() == null || stay.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Stay title cannot be null or empty");
+        }
         if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
             double lon = stay.getLocalisation()[0];
             double lat = stay.getLocalisation()[1];
