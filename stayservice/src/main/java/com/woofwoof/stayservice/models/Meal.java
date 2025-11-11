@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import jakarta.persistence.Column;
 
 @Data
 @Entity
@@ -13,6 +14,7 @@ public class Meal {
     @GeneratedValue
     private Long id_meal;
 
+    @Column(nullable = false)
     private String label;
 
     @ManyToOne

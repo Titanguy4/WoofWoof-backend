@@ -5,14 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import jakarta.persistence.Column;
 
 @Data
 @Entity
 public class LearningSkill {
     @Id
     @GeneratedValue
-    private String id_skill;
+    private Long id_skill;
 
+    @Column(nullable = false)
     private String label;
 
     @ManyToOne
