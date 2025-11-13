@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 
 @Data
 @Entity
@@ -18,5 +19,6 @@ public class Meal {
     private String label;
 
     @ManyToOne
+    @JoinColumn(name = "id_stay")
     private Stay stay;
 }

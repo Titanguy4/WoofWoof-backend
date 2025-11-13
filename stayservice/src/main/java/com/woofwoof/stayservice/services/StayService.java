@@ -39,31 +39,42 @@ public class StayService {
     }
 
     public Stay updateStay(Stay stay) {
-        if(!stayRepository.existsById(stay.getId_stay())) {
-            throw new RuntimeException("Stay with id " + stay.getId_stay() + " does not exist.");
+        if(!stayRepository.existsById(stay.getId())) {
+            throw new RuntimeException("Stay with id " + stay.getId() + " does not exist.");
         } else {
             return stayRepository.save(stay);
         }
     }
 
-    public List<Meal> getMealsByStayId(Long stayId) {
-        return stayRepository.findMealsByStayId(stayId);
+    public List<Meal> getMealsById(Long id) {
+        Stay stay = stayRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Stay not found"));
+        return stay.getMeals();
     }
 
-    public List<Accomodation> getAccommodationsByStayId(Long stayId) {
-        return stayRepository.findAccommodationsByStayId(stayId);
+    public List<Accomodation> getAccommodationsById(Long id) {
+        Stay stay = stayRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Stay not found"));
+        return stay.getAccomodations();
     }
 
-    public List<Activity> getActivitiesByStayId(Long stayId) {
-        return stayRepository.findActivitiesByStayId(stayId);
+    public List<Activity> getActivitiesById(Long id) {
+        Stay stay = stayRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Stay not found"));
+        return stay.getActivities();
+}
+
+
+    public List<LearningSkill> getLearningSkillsById(Long id) {
+        Stay stay = stayRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Stay not found"));
+        return stay.getLearningSkills();
     }
 
-    public List<LearningSkill> getLearningSkillsByStayId(Long stayId) {
-        return stayRepository.findLearningSkillsByStayId(stayId);
-    }
-
-    public List<Review> getReviewsByStayId(Long stayId) {
-        return stayRepository.findReviewsByStayId(stayId);
+    public List<Review> getReviewsById(Long id) {
+        Stay stay = stayRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Stay not found"));
+        return stay.getReviews();
     }
     
 }

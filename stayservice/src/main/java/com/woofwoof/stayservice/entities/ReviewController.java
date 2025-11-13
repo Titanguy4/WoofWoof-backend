@@ -22,14 +22,14 @@ public class ReviewController {
         return reviewService.getAllReviews();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Review> getReviewById(@PathVariable Long id) {
-        return reviewService.getReviewById(id);
+    @GetMapping("/{id_review}")
+    public Optional<Review> getReviewById(@PathVariable Long id_review) {
+        return reviewService.getReviewById(id_review);
     }
 
-    @GetMapping("/stay/{stayId}")
-    public List<Review> getReviewsByStay(@PathVariable Long stayId) {
-        return reviewService.getReviewsByStayId(stayId);
+    @GetMapping("/stay/{id}")
+    public List<Review> getReviewsByStay_Id(@PathVariable Long id) {
+        return reviewService.getReviewsByStay_Id(id);
     }
 
     @PostMapping
@@ -37,13 +37,13 @@ public class ReviewController {
         return reviewService.createReview(review);
     }
 
-    @PutMapping("/{id}")
-    public Review updateReview(@PathVariable Long id, @RequestBody Review updatedReview) {
-        return reviewService.updateReview(id, updatedReview);
+    @PutMapping("/{id_review}")
+    public Review updateReview(@PathVariable Long id_review, @RequestBody Review updatedReview) {
+        return reviewService.updateReview(id_review, updatedReview);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable Long id) {
-        reviewService.deleteReview(id);
+    @DeleteMapping("/{id_review}")
+    public void deleteReview(@PathVariable Long id_review) {
+        reviewService.deleteReview(id_review);
     }
 }

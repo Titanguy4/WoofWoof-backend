@@ -48,7 +48,7 @@ services:
     networks:
       - woofwoof-network
 
-  stay-db:
+  stayservice-db:
     image: ${POSTGRES_IMAGE}
     container_name: stay-db
     restart: unless-stopped

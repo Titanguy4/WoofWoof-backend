@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface LearningSkillRepository extends JpaRepository<LearningSkill, Long> {
-    List<LearningSkill> findByStay_IdStay(Long stayId);
+    List<LearningSkill> findByStay_Id(Long id);
 }

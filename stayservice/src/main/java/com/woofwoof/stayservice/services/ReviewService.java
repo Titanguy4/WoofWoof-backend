@@ -24,33 +24,33 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    public Optional<Review> getReviewById(Long id) {
-        return reviewRepository.findById(id);
+    public Optional<Review> getReviewById(long id_review) {
+        return reviewRepository.findById(id_review);
     }
 
     public List<Review> getAllReviews() {
         return reviewRepository.findAll();
     }
 
-    public List<Review> getReviewsByStayId(Long stayId) {
-        return reviewRepository.findByStay_IdStay(stayId);
+    public List<Review> getReviewsByStay_Id(long id) {
+        return reviewRepository.findByStay_Id(id);
     }
 
-    public Review updateReview(Long id, Review updatedReview) {
-        return reviewRepository.findById(id)
+    public Review updateReview(long id_review, Review updatedReview) {
+        return reviewRepository.findById(id_review)
                 .map(existing -> {
                     existing.setContent(updatedReview.getContent());
                     existing.setRating(updatedReview.getRating());
                     existing.setDate(updatedReview.getDate());
                     return reviewRepository.save(existing);
                 })
-                .orElseThrow(() -> new RuntimeException("Review with id " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("Review with id " + id_review + " not found"));
     }
 
-    public void deleteReview(Long id) {
-        if (!reviewRepository.existsById(id)) {
-            throw new RuntimeException("Review with id " + id + " not found");
+    public void deleteReview(long id_review) {
+        if (!reviewRepository.existsById(id_review)) {
+            throw new RuntimeException("Review with id " + id_review + " not found");
         }
-        reviewRepository.deleteById(id);
+        reviewRepository.deleteById(id_review);
     }
 }

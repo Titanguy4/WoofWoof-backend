@@ -1,6 +1,7 @@
 package com.woofwoof.stayservice.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,5 +24,6 @@ public class Activity {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "id_stay")
     private Stay stay;
 }

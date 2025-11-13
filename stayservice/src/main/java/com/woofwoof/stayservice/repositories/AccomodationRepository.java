@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface AccomodationRepository extends JpaRepository<Accomodation, Long> {
-    List<Accomodation> findByStay_IdStay(Long stayId);
+    List<Accomodation> findByStay_Id(Long id);
 }
