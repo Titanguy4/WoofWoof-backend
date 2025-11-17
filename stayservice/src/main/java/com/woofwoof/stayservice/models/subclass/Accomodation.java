@@ -1,10 +1,13 @@
-package com.woofwoof.stayservice.models;
+package com.woofwoof.stayservice.models.subclass;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+
+import com.woofwoof.stayservice.models.Stay;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 
@@ -13,7 +16,8 @@ import jakarta.persistence.JoinColumn;
 public class Accomodation {
     @GeneratedValue
     @Id
-    private Long id_accomodation;
+    @Column(name = "id_accomodation")
+    private Long id;
 
     @Column(nullable = false)
     public String label;

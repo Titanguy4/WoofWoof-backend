@@ -14,6 +14,11 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.woofwoof.stayservice.models.subclass.Accomodation;
+import com.woofwoof.stayservice.models.subclass.Activity;
+import com.woofwoof.stayservice.models.subclass.LearningSkill;
+import com.woofwoof.stayservice.models.subclass.Meal;
+
 @Data
 @Entity
 @Builder

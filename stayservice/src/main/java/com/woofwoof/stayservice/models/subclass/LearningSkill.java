@@ -1,27 +1,26 @@
-package com.woofwoof.stayservice.models;
+package com.woofwoof.stayservice.models.subclass;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
-import lombok.Builder;
+
+import com.woofwoof.stayservice.models.Stay;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 
 @Data
 @Entity
-@Builder
-public class Activity {
+public class LearningSkill {
     @Id
     @GeneratedValue
-    private Long id_activity;
+    @Column(name = "id_skill")
+    private Long id;
 
     @Column(nullable = false)
     private String label;
-
-    @Column(nullable = false, length = 2000)
-    private String description;
 
     @ManyToOne
     @JoinColumn(name = "id_stay")

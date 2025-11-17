@@ -99,6 +99,8 @@ services:
     image: quay.io/keycloak/keycloak:25.0.0
     container_name: keycloak
     command: start-dev
+    env_file:
+      - ./.env
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: keycloak-db
@@ -117,6 +119,8 @@ services:
     image: postgres:15-alpine
     container_name: keycloak-postgres
     restart: unless-stopped
+    env_file:
+      - ./.env
     environment:
       POSTGRES_DB: ${KEYCLOAK_DB}
       POSTGRES_USER: ${KEYCLOAK_DB_USER}

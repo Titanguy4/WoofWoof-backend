@@ -2,10 +2,14 @@ package com.woofwoof.stayservice.services;
 
 import org.springframework.stereotype.Service;
 import com.woofwoof.stayservice.models.*;
+import com.woofwoof.stayservice.models.subclass.Accomodation;
+import com.woofwoof.stayservice.models.subclass.Activity;
+import com.woofwoof.stayservice.models.subclass.LearningSkill;
+import com.woofwoof.stayservice.models.subclass.Meal;
 import com.woofwoof.stayservice.repositories.StayRepository;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public class StayService {
     private final StayRepository stayRepository;
@@ -30,8 +34,9 @@ public class StayService {
         return stayRepository.save(stay);
     }
 
-    public Optional<Stay> getStayById(Long id) {
-        return stayRepository.findById(id);
+    public Stay getStayById(Long id) {
+        return stayRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Stay not found"));
     }
 
     public void deleteStay(Long id) {
