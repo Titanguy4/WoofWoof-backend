@@ -19,7 +19,7 @@ public class ActivityController {
     }
 
     @GetMapping
-    public List<Activity> getAllActivitys() {
+    public List<Activity> getAllActivities() {
         return activityRepository.findAll();
     }
 
@@ -38,7 +38,7 @@ public class ActivityController {
     }
 
     @PutMapping("/{id}")
-    public Activity updateActivity(@PathVariable Long id, @RequestBody Activity activity) {
+    public Activity updateActivity(@PathVariable long id, @RequestBody Activity activity) {
         if (!activityRepository.existsById(id)) {
             throw new IllegalArgumentException("Activity not found");
         }
@@ -47,7 +47,7 @@ public class ActivityController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteActivity(@PathVariable Long id) {
+    public void deleteActivity(@PathVariable long id) {
         if (!activityRepository.existsById(id)) {
             throw new IllegalArgumentException("Activity not found");
         }

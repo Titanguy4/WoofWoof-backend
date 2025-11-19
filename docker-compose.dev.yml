@@ -20,7 +20,7 @@ services:
       - "8080:8080"
     depends_on:
       - eureka-server
-    restart: always
+    restart: unless-stopped
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/  # pour s’assurer que la variable est disponible
     networks:
@@ -48,7 +48,6 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
       - woofwoof-network
-
   stayservice-db:
     image: postgres:15-alpine
     container_name: stayservice-db

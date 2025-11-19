@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.woofwoof.stayservice.models.Stay;
 
 import jakarta.persistence.Column;
@@ -24,5 +25,6 @@ public class Meal {
 
     @ManyToOne
     @JoinColumn(name = "id_stay")
+    @JsonIgnore
     private Stay stay;
 }

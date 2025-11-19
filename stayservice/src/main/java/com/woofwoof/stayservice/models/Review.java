@@ -2,6 +2,8 @@ package com.woofwoof.stayservice.models;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +20,7 @@ public class Review {
     @Column(name = "id_review")
     private Long id;
 
-    private String rating;
+    private Long rating;
 
     private Date date;
 
@@ -26,6 +28,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "id_stay")
+    @JsonIdentityReference(alwaysAsId = true)
     private Stay stay;
 
 }

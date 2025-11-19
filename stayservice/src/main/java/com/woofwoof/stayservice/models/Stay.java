@@ -54,12 +54,10 @@ public class Stay {
     private Long bookingId;
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = false)
     @Builder.Default
     private List<Activity> activities = new ArrayList<>();
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = false)
     @Builder.Default
     private List<LearningSkill> learningSkills = new ArrayList<>();
 
@@ -68,7 +66,6 @@ public class Stay {
     private List<Meal> meals = new ArrayList<>();
 
     @OneToMany(mappedBy = "stay", cascade =  CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = false)
     @Builder.Default
     private List<Accomodation> accomodations = new ArrayList<>();
 
