@@ -22,7 +22,7 @@ services:
       - eureka-server
     restart: unless-stopped
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/  # pour s’assurer que la variable est disponible
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/ # pour s’assurer que la variable est disponible
     networks:
       - woofwoof-network
 
@@ -48,20 +48,20 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
       - woofwoof-network
+
   stayservice-db:
     image: postgres:15-alpine
-    container_name: stayservice-db
+    container_name: stay-service-postgres
     environment:
       POSTGRES_DB: ${STAY_SERVICE_DB}
-      POSTGRES_USER: ${STAY_SERVICE_DB_USER}
-      POSTGRES_PASSWORD: ${STAY_SERVICE_DB_PASSWORD}
+      POSTGRES_USER: ${STAY_SERVICE_USER}
+      POSTGRES_PASSWORD: ${STAY_SERVICE_PASSWORD}
     volumes:
       - stay_pgdata:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     networks:
       - woofwoof-network
-
 
   # --- BOOKING SERVICE ---
   booking-service:
