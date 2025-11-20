@@ -97,7 +97,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.0
     container_name: keycloak
-    command: start-dev
+    command: start-dev --import-realm
     env_file:
       - ./.env
     environment:
@@ -111,6 +111,8 @@ services:
       - "8000:8080"
     depends_on:
       - keycloak-db
+    volumes:
+      - ./keycloak-import.json:/opt/keycloak/data/import/keycloak-WoofWoof-config.json
     networks:
       - woofwoof-network
 
