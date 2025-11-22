@@ -10,7 +10,6 @@ import com.woofwoof.stayservice.services.StayService;
 import com.woofwoof.stayservice.models.Stay;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,7 +28,7 @@ public class StayController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Stay> getStayById(@PathVariable Long id) {
+    public Stay getStayById(@PathVariable Long id) {
         return stayService.getStayById(id);
     }
 
