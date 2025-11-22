@@ -1,12 +1,14 @@
 package com.woofwoof.stayservice.services;
 
-import com.woofwoof.stayservice.models.Review;
-import com.woofwoof.stayservice.repositories.ReviewRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.woofwoof.stayservice.entities.Review;
+import com.woofwoof.stayservice.repositories.ReviewRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

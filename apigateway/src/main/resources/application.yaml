@@ -4,19 +4,17 @@ spring:
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      routes:
-        - id: booking-service
-          uri: lb://booking-service
-          predicates:
-            - Path=/bookings/**
-        - id: stay-service
-          uri: lb://stay-service
-          predicates:
-            - Path=/stays/**
+      server:
+        webmvc:
+          routes:
+            - id: booking-service
+              uri: lb://booking-service
+              predicates:
+                - Path=/bookings/**
+            - id: stay-service
+              uri: lb://stay-service
+              predicates:
+                - Path=/stays/**
 
   security:
     oauth2:

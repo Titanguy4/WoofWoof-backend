@@ -1,19 +1,21 @@
 package com.woofwoof.stayservice.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
-import com.woofwoof.stayservice.models.*;
-import com.woofwoof.stayservice.models.subclass.Accomodation;
-import com.woofwoof.stayservice.models.subclass.Activity;
-import com.woofwoof.stayservice.models.subclass.LearningSkill;
-import com.woofwoof.stayservice.models.subclass.Meal;
+
+import com.woofwoof.stayservice.entities.Review;
+import com.woofwoof.stayservice.entities.Stay;
+import com.woofwoof.stayservice.entities.subclass.Accomodation;
+import com.woofwoof.stayservice.entities.subclass.Activity;
+import com.woofwoof.stayservice.entities.subclass.LearningSkill;
+import com.woofwoof.stayservice.entities.subclass.Meal;
 import com.woofwoof.stayservice.repositories.StayRepository;
 import com.woofwoof.stayservice.repositories.subclass.AccomodationRepository;
 import com.woofwoof.stayservice.repositories.subclass.ActivityRepository;
 import com.woofwoof.stayservice.repositories.subclass.LearningSkillRepository;
 import com.woofwoof.stayservice.repositories.subclass.MealRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class StayService {
@@ -26,13 +28,12 @@ public class StayService {
     private final AccomodationRepository accomodationRepo;
 
     public StayService(
-        StayRepository stayRepository,
-        GeocodingService geocodingService,
-        ActivityRepository activityRepo,
-        MealRepository mealRepo,
-        LearningSkillRepository skillRepo,
-        AccomodationRepository accomodationRepo
-    ) {
+            StayRepository stayRepository,
+            GeocodingService geocodingService,
+            ActivityRepository activityRepo,
+            MealRepository mealRepo,
+            LearningSkillRepository skillRepo,
+            AccomodationRepository accomodationRepo) {
         this.stayRepository = stayRepository;
         this.geocodingService = geocodingService;
         this.activityRepo = activityRepo;
@@ -48,7 +49,7 @@ public class StayService {
 
         if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
 
-            double lat = stay.getLocalisation()[0];  // JSON = [lat, lon]
+            double lat = stay.getLocalisation()[0]; // JSON = [lat, lon]
             double lon = stay.getLocalisation()[1];
 
             var info = geocodingService.getLocationInfo(lat, lon);
@@ -59,7 +60,7 @@ public class StayService {
         List<Activity> finalActivities = new ArrayList<>();
         for (Activity a : stay.getActivities()) {
             Activity db = activityRepo.findById(a.getId())
-                .orElseThrow(() -> new RuntimeException("Activity not found: " + a.getId()));
+                    .orElseThrow(() -> new RuntimeException("Activity not found: " + a.getId()));
             db.setStay(stay);
             finalActivities.add(db);
         }
@@ -68,7 +69,7 @@ public class StayService {
         List<Meal> finalMeals = new ArrayList<>();
         for (Meal m : stay.getMeals()) {
             Meal db = mealRepo.findById(m.getId())
-                .orElseThrow(() -> new RuntimeException("Meal not found: " + m.getId()));
+                    .orElseThrow(() -> new RuntimeException("Meal not found: " + m.getId()));
             db.setStay(stay);
             finalMeals.add(db);
         }
@@ -77,7 +78,7 @@ public class StayService {
         List<LearningSkill> finalSkills = new ArrayList<>();
         for (LearningSkill s : stay.getLearningSkills()) {
             LearningSkill db = skillRepo.findById(s.getId())
-                .orElseThrow(() -> new RuntimeException("Skill not found: " + s.getId()));
+                    .orElseThrow(() -> new RuntimeException("Skill not found: " + s.getId()));
             db.setStay(stay);
             finalSkills.add(db);
         }
@@ -86,7 +87,7 @@ public class StayService {
         List<Accomodation> finalAcc = new ArrayList<>();
         for (Accomodation ac : stay.getAccomodations()) {
             Accomodation db = accomodationRepo.findById(ac.getId())
-                .orElseThrow(() -> new RuntimeException("Accomodation not found: " + ac.getId()));
+                    .orElseThrow(() -> new RuntimeException("Accomodation not found: " + ac.getId()));
             db.setStay(stay);
             finalAcc.add(db);
         }
@@ -97,7 +98,7 @@ public class StayService {
 
     public Stay getStayById(Long id) {
         return stayRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Stay not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Stay not found"));
     }
 
     public void deleteStay(Long id) {
@@ -105,7 +106,7 @@ public class StayService {
     }
 
     public Stay updateStay(Stay stay) {
-        if(!stayRepository.existsById(stay.getId())) {
+        if (!stayRepository.existsById(stay.getId())) {
             throw new RuntimeException("Stay with id " + stay.getId() + " does not exist.");
         } else {
             return stayRepository.save(stay);
@@ -114,33 +115,32 @@ public class StayService {
 
     public List<Meal> getMealsById(Long id) {
         Stay stay = stayRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Stay not found"));
+                .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getMeals();
     }
 
     public List<Accomodation> getAccommodationsById(Long id) {
         Stay stay = stayRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Stay not found"));
+                .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getAccomodations();
     }
 
     public List<Activity> getActivitiesById(Long id) {
         Stay stay = stayRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Stay not found"));
+                .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getActivities();
-}
-
+    }
 
     public List<LearningSkill> getLearningSkillsById(Long id) {
         Stay stay = stayRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Stay not found"));
+                .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getLearningSkills();
     }
 
     public List<Review> getReviewsById(Long id) {
         Stay stay = stayRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Stay not found"));
+                .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getReviews();
     }
-    
+
 }

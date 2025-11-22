@@ -44,7 +44,7 @@ services:
       STAY_SERVICE_DB: ${STAY_SERVICE_DB}
       STAY_SERVICE_DB_USER: ${STAY_SERVICE_DB_USER}
       STAY_SERVICE_DB_PASSWORD: ${STAY_SERVICE_DB_PASSWORD}
-      STAY_SERVICE_PORT: ${STAY_SERVICE_PORT}
+      STAY_SERVICE_DB_PORT: ${STAY_SERVICE_DB_PORT}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
       - woofwoof-network
@@ -84,8 +84,8 @@ services:
     container_name: booking-service-postgres
     environment:
       POSTGRES_DB: ${BOOKING_SERVICE_DB}
-      POSTGRES_USER: ${BOOKING_SERVICE_USER}
-      POSTGRES_PASSWORD: ${BOOKING_SERVICE_PASSWORD}
+      POSTGRES_USER: ${BOOKING_SERVICE_DB_USER}
+      POSTGRES_PASSWORD: ${BOOKING_SERVICE_DB_PASSWORD}
     volumes:
       - booking_pgdata:/var/lib/postgresql/data
     ports:
