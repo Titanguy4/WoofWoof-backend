@@ -1,4 +1,4 @@
-package com.woofwoof.stayservice.entities.subclass;
+package com.woofwoof.stayservice.controllers.subclass;
 
 import com.woofwoof.stayservice.models.subclass.LearningSkill;
 import com.woofwoof.stayservice.repositories.subclass.LearningSkillRepository;

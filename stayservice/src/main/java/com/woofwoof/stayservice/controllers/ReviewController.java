@@ -1,4 +1,4 @@
-package com.woofwoof.stayservice.entities;
+package com.woofwoof.stayservice.controllers;
 
 import com.woofwoof.stayservice.models.Review;
 import com.woofwoof.stayservice.services.ReviewService;
