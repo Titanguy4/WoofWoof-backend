@@ -1,4 +1,8 @@
 spring:
+  profiles:
+    active:
+      - dev
+
   application:
     name: api-gateway
 
@@ -20,6 +24,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
+          jwk-set-uri: http://keycloak:8080/realms/WoofWoof/protocol/openid-connect/certs
           issuer-uri: http://localhost:8000/realms/WoofWoof
 
 server:
@@ -33,3 +38,8 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    "[org.springframework.security]": DEBUG
+    "[org.springframework.security.oauth2.core.web]": DEBUG
