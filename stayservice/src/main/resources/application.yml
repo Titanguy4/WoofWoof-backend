@@ -1,4 +1,11 @@
+server:
+  port: 8081
+
 spring:
+  profiles:
+    active:
+      - dev
+
   application:
     name: stay-service
 
@@ -16,8 +23,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-server:
-  port: ${STAY_SERVICE_PORT:8081}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:8080/realms/WoofWoof/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8000/realms/WoofWoof
 
 eureka:
   instance:
@@ -26,4 +37,9 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eureka-server:8761/eureka/}
+      defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    "[com.woofwoof.stayservice]": DEBUG
+    "[org.springframework.security.oauth2.core]": DEBUG

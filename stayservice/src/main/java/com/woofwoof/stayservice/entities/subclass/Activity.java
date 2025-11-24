@@ -1,26 +1,27 @@
-package com.woofwoof.stayservice.models.subclass;
+package com.woofwoof.stayservice.entities.subclass;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.woofwoof.stayservice.models.Stay;
+import com.woofwoof.stayservice.entities.Stay;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
-import lombok.Builder;
-
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Activity {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "id_activity")
     private Long id;
 

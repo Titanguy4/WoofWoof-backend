@@ -1,12 +1,18 @@
 package com.woofwoof.stayservice.controllers.subclass;
 
-import com.woofwoof.stayservice.models.subclass.LearningSkill;
-import com.woofwoof.stayservice.repositories.subclass.LearningSkillRepository;
-
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.woofwoof.stayservice.entities.subclass.LearningSkill;
+import com.woofwoof.stayservice.repositories.subclass.LearningSkillRepository;
 
 @RestController
 @RequestMapping("/learningskills")

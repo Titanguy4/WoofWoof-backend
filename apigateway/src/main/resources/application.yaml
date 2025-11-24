@@ -1,26 +1,35 @@
 spring:
+  profiles:
+    active:
+      - dev
+
   application:
     name: api-gateway
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      routes:
-        - id: booking-service
-          uri: lb://booking-service
-          predicates:
-            - Path=/bookings/**
-        - id: stay-service
-          uri: lb://stay-service
-          predicates:
-            - Path=/stays/**
-        - id: media-service
-          uri: lb://media-service
-          predicates:
-            - Path=/medias/**
+      server:
+        webmvc:
+          routes:
+            - id: booking-service
+              uri: lb://booking-service
+              predicates:
+                - Path=/bookings/**
+            - id: stay-service
+              uri: lb://stay-service
+              predicates:
+                - Path=/stays/**
+            - id: media-service
+              uri: lb://media-service
+              predicates:
+                - Path=/medias/**
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://keycloak:8080/realms/WoofWoof/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8000/realms/WoofWoof
 
 server:
   port: 8080
@@ -33,3 +42,8 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    "[org.springframework.security]": DEBUG
+    "[org.springframework.security.oauth2.core.web]": DEBUG

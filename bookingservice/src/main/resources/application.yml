@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://${BOOKING_SERVICE_DB_HOST:bookingservice-db}:5432/${BOOKING_SERVICE_DB:bookingservice}
-    username: ${BOOKING_SERVICE_USER:bookinguser}
-    password: ${BOOKING_SERVICE_PASSWORD:bookingpass}
+    username: ${BOOKING_SERVICE_DB_USER:bookinguser}
+    password: ${BOOKING_SERVICE_DB_PASSWORD:bookingpass}
     driver-class-name: org.postgresql.Driver
 
   jpa:
