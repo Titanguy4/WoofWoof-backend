@@ -18,6 +18,12 @@ public class MediaController {
     @Autowired
     private MediaRepository mediaRepository;
 
+    // Endpoint pour récupérer tous les médias
+    @GetMapping
+    public List<Media> getAllMedias() {
+        return mediaRepository.findAll();
+    }
+
     // function to get stayId from WoofShare photo to link with stay service
     @GetMapping("/woofshare/{mediaId}")
     public Long getStayIdFromWoofSharePhoto(@PathVariable Long mediaId) {
