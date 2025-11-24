@@ -30,7 +30,7 @@ public class Booking {
     public void setUserId(Long userId) { this.userId = userId; }
 
     public LocalDate getStartRequestedDate() { return startRequestedDate; }
-    public void setRequestedDate(LocalDate startRequestedDate) { this.startRequestedDate = startRequestedDate; }
+    public void setStartRequestedDate(LocalDate startRequestedDate) { this.startRequestedDate = startRequestedDate; }
 
     public LocalDate getEndRequestedDate() { return endRequestedDate; }
     public void setEndRequestedDate(LocalDate endRequestedDate) { this.endRequestedDate = endRequestedDate; }
