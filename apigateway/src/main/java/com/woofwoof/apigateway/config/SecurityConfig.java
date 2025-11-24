@@ -45,8 +45,8 @@ public class SecurityConfig {
                         // .requestMatchers("/stays/**").hasRole("BACKPACKER")
                         .anyRequest().permitAll())
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> {
-                        }));
+                        .jwt(jwt -> jwt.decoder(jwtDecoder())
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter())));
 
         return http.build();
     }

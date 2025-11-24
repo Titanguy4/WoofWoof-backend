@@ -23,13 +23,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://keycloak:8080/realms/WoofWoof/protocol/openid-connect/certs
-          issuer-uri: http://localhost:8000/realms/WoofWoof
-
 eureka:
   instance:
     prefer-ip-address: true
