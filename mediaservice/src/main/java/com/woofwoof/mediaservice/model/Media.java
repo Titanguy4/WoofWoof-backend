@@ -19,7 +19,7 @@ public class Media {
 
     // Champs dépendants du type de média
     private Long stayId;      // Pour WOOFSHARE_PHOTO et STAY_PHOTO
-    private String username;  // Pour PROFILE_PHOTO
+    private Long userId;  // Pour PROFILE_PHOTO
 
     // --- Getters / Setters ---
     public Long getId() { return id; }
@@ -37,6 +37,6 @@ public class Media {
     public Long getStayId() { return stayId; }
     public void setStayId(Long stayId) { this.stayId = stayId; }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 }
