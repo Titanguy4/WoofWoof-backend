@@ -1,14 +1,14 @@
 -- ============================
 --     PROFILE PHOTOS
 -- ============================
-INSERT INTO media (url, post_date, media_type, stay_id, username)
+INSERT INTO media (url, post_date, media_type, stay_id, user_id)
 VALUES 
-('https://www.princessefoulard.com/blog/wp-content/uploads/2022/08/beret-homme.jpg', CURRENT_DATE, 'PROFILE_PHOTO', NULL, 'yanissou');
+('https://www.princessefoulard.com/blog/wp-content/uploads/2022/08/beret-homme.jpg', CURRENT_DATE, 'PROFILE_PHOTO', NULL, 1);
 
 -- ============================
 --     STAY PHOTOS
 -- ============================
-INSERT INTO media (url, post_date, media_type, stay_id, username)
+INSERT INTO media (url, post_date, media_type, stay_id, user_id)
 VALUES
 ('https://images.wwoof.net/MSVkv-iVxWSTVSJ02Biz3TahATv3FV8JjFENNMkPexc/el:t/h:432/rt:fill/wm:1:soea:5:5:0.14/w:768/plain/wwoof://photos/hosts/16a6dd12d77e0878eed01d7befa6f00f.jpg', CURRENT_DATE, 'STAY_PHOTO', 2, NULL),
 ('https://thedogkennelcollection.b-cdn.net/wp-content/uploads/fly-images/4113/best-dog-kennel-1600x9999.jpg', CURRENT_DATE, 'STAY_PHOTO', 2, NULL),
@@ -26,7 +26,7 @@ VALUES
 -- ============================
 --     WOOF SHARE PHOTOS
 -- ============================
-INSERT INTO media (url, post_date, media_type, stay_id, username)
+INSERT INTO media (url, post_date, media_type, stay_id, user_id)
 VALUES
 ('https://media.istockphoto.com/id/1167866977/fr/photo/vieux-bâtiments-de-ferme.jpg?s=612x612&w=0&k=20&c=eUTW0xTOQVgDDIpIUx9cOBh_5rU-LXVexqK34KuK4a8=', CURRENT_DATE, 'WOOFSHARE_PHOTO', 1, NULL),
 ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/fb/fd/14/caption.jpg?w=1200&h=-1&s=1', CURRENT_DATE, 'WOOFSHARE_PHOTO', 2, NULL),

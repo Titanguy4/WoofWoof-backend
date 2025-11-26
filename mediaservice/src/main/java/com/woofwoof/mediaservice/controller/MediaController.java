@@ -43,9 +43,9 @@ public class MediaController {
     }
 
     // function to get profile photo for profile page
-    @GetMapping("/profile/{username}")
-    public List<Media> getProfilePhotoByUsername(@PathVariable String username) {
-        return mediaRepository.findByMediaTypeAndUsername(MediaType.PROFILE_PHOTO, username);
+    @GetMapping("/profile/{userId}")
+    public List<Media> getProfilePhotoByUserId(@PathVariable Long userId) {
+        return mediaRepository.findByMediaTypeAndUserId(MediaType.PROFILE_PHOTO, userId);
     }
 
     // function to get stay photo for stay page
