@@ -2,6 +2,7 @@ package com.woofwoof.stayservice.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.woofwoof.stayservice.entities.subclass.Accomodation;
 import com.woofwoof.stayservice.entities.subclass.Activity;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Stay {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
@@ -49,9 +50,8 @@ public class Stay {
     private Boolean status;
 
     @Column(nullable = false)
-    private Long wooferId;
+    private UUID wooferId;
 
-    private Long bookingId;
 
     @OneToMany(mappedBy = "stay", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

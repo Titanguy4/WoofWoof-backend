@@ -1,5 +1,7 @@
 package com.woofwoof.stayservice.config;
 
+import java.util.UUID;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -43,7 +45,7 @@ public class DataSeeder implements CommandLineRunner {
                                 .department("Ille-et-Vilaine")
                                 .region("Bretagne")
                                 .status(true)
-                                .wooferId(1L)
+                                .wooferId(UUID.randomUUID())
                                 .build();
 
                 // Activités pour la ferme bretonne
@@ -106,7 +108,7 @@ public class DataSeeder implements CommandLineRunner {
                                 .department("Bouches-du-Rhône")
                                 .region("Provence-Alpes-Côte d'Azur")
                                 .status(true)
-                                .wooferId(2L)
+                                .wooferId(UUID.randomUUID())
                                 .build();
 
                 Activity activity3 = Activity.builder()
@@ -151,7 +153,7 @@ public class DataSeeder implements CommandLineRunner {
                                 .department("Isère")
                                 .region("Auvergne-Rhône-Alpes")
                                 .status(false)
-                                .wooferId(3L)
+                                .wooferId(UUID.randomUUID())
                                 .build();
 
                 Activity activity5 = Activity.builder()
