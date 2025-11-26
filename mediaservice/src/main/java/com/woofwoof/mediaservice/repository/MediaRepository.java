@@ -11,4 +11,6 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     List<Media> findByMediaTypeAndStayId(MediaType mediaType, Long stayId);
 
     List<Media> findByMediaTypeAndUserId(MediaType mediaType, Long userId);
+
+    List<Media> findByMediaType(MediaType mediaType);
 }

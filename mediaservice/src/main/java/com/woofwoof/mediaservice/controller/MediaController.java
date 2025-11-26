@@ -53,4 +53,10 @@ public class MediaController {
     public List<Media> getStayPhotoByStayId(@PathVariable Long stayId) {
         return mediaRepository.findByMediaTypeAndStayId(MediaType.STAY_PHOTO, stayId);
     }
+
+    // Endpoint pour récupérer toutes les WoofShare photos
+    @GetMapping("/woofshare")
+    public List<Media> getAllWoofSharePhotos() {
+        return mediaRepository.findByMediaType(MediaType.WOOFSHARE_PHOTO);
+    }
 }
