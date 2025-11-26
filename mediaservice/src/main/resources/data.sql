@@ -3,7 +3,7 @@
 -- ============================
 INSERT INTO media (url, post_date, media_type, stay_id, user_id)
 VALUES
-('https://www.princessefoulard.com/blog/wp-content/uploads/2022/08/beret-homme.jpg', CURRENT_DATE, 'PROFILE_PHOTO', NULL, '8d75d3af-1066-430c-9a1d-579c8004a563'), 
+('https://hostelforumzadar.com/media/images/blog/Backpacker.jpg', CURRENT_DATE, 'PROFILE_PHOTO', NULL, '8d75d3af-1066-430c-9a1d-579c8004a563'), 
 ('https://www.princessefoulard.com/blog/wp-content/uploads/2022/08/beret-homme.jpg', CURRENT_DATE, 'PROFILE_PHOTO', NULL, '77d98606-a1ab-4313-9cb6-88d1f188f8ee');
 
 -- ============================
