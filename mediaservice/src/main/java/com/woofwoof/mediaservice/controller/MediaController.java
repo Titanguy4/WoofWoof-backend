@@ -44,8 +44,12 @@ public class MediaController {
 
     // function to get profile photo for profile page
     @GetMapping("/profile/{userId}")
-    public List<Media> getProfilePhotoByUserId(@PathVariable Long userId) {
-        return mediaRepository.findByMediaTypeAndUserId(MediaType.PROFILE_PHOTO, userId);
+    public Media getProfilePhotoByUserId(@PathVariable Long userId) {
+        return mediaRepository.findByMediaTypeAndUserId(MediaType.PROFILE_PHOTO, userId)
+                .stream()
+                .findFirst() // prend la première (et normalement unique) photo
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Profile photo not found for userId: " + userId));
     }
 
     // function to get stay photo for stay page
