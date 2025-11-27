@@ -3,13 +3,13 @@
 -- ===================================
 
 INSERT INTO booking (
-    mission_id,
+    stay_id,
     user_id,
     start_requested_date,
     end_requested_date,
     status,
     email,
-    number
+    phone_number
 ) VALUES
 -- Booking 1
 (1, 101, '2025-01-10', '2025-01-15', 'PENDING', 'test1@example.com', '0612345678'),

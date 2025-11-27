@@ -21,6 +21,10 @@ spring:
     init:
       mode: always
 
+  output:
+    ansi:
+      enabled: ALWAYS
+
 server:
   port: 8082
 
@@ -35,5 +39,9 @@ eureka:
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    org.springframework: info
+    root: WARN
+    "[com.woofwoof.bookingservice]": DEBUG
+    "[org.springframework.web]": WARN
+    "[org.hibernate]": WARN
+    "[org.hibernate.sql]": DEBUG
+    "[org.hibernate.type.descriptor.sql]": TRACE
