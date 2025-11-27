@@ -2,6 +2,7 @@ package com.woofwoof.mediaservice.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "media")
@@ -18,8 +19,10 @@ public class Media {
     private MediaType mediaType;
 
     // Champs dépendants du type de média
-    private Long stayId;      // Pour WOOFSHARE_PHOTO et STAY_PHOTO
-    private String username;  // Pour PROFILE_PHOTO
+    private Long stayId; // pour WOOFSHARE_PHOTO et STAY_PHOTO
+
+    @Column(columnDefinition = "uuid")
+    private UUID userId; // pour PROFILE_PHOTO
 
     // --- Getters / Setters ---
     public Long getId() { return id; }
@@ -37,6 +40,6 @@ public class Media {
     public Long getStayId() { return stayId; }
     public void setStayId(Long stayId) { this.stayId = stayId; }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public UUID getUserId() { return userId; }
+    public void setUserId(UUID userId) { this.userId = userId; }
 }

@@ -5,10 +5,13 @@ import com.woofwoof.mediaservice.model.Media;
 import com.woofwoof.mediaservice.model.MediaType;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MediaRepository extends JpaRepository<Media, Long> {
 
     List<Media> findByMediaTypeAndStayId(MediaType mediaType, Long stayId);
 
-    List<Media> findByMediaTypeAndUsername(MediaType mediaType, String username);
+    List<Media> findByMediaTypeAndUserId(MediaType mediaType, UUID userId);
+
+    List<Media> findByMediaType(MediaType mediaType);
 }

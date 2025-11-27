@@ -10,6 +10,7 @@ import com.woofwoof.mediaservice.model.MediaType;
 import com.woofwoof.mediaservice.repository.MediaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/medias")
@@ -17,6 +18,12 @@ public class MediaController {
 
     @Autowired
     private MediaRepository mediaRepository;
+
+    // Endpoint pour récupérer tous les médias
+    @GetMapping
+    public List<Media> getAllMedias() {
+        return mediaRepository.findAll();
+    }
 
     // function to get stayId from WoofShare photo to link with stay service
     @GetMapping("/woofshare/{mediaId}")
@@ -37,14 +44,24 @@ public class MediaController {
     }
 
     // function to get profile photo for profile page
-    @GetMapping("/profile/{username}")
-    public List<Media> getProfilePhotoByUsername(@PathVariable String username) {
-        return mediaRepository.findByMediaTypeAndUsername(MediaType.PROFILE_PHOTO, username);
+    @GetMapping("/profile/{userId}")
+    public Media getProfilePhotoByUserId(@PathVariable UUID userId) {
+        return mediaRepository.findByMediaTypeAndUserId(MediaType.PROFILE_PHOTO, userId)
+                .stream()
+                .findFirst() // prend la première (et normalement unique) photo
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Profile photo not found for userId: " + userId));
     }
 
     // function to get stay photo for stay page
     @GetMapping("/stay/{stayId}")
     public List<Media> getStayPhotoByStayId(@PathVariable Long stayId) {
         return mediaRepository.findByMediaTypeAndStayId(MediaType.STAY_PHOTO, stayId);
+    }
+
+    // Endpoint pour récupérer toutes les WoofShare photos
+    @GetMapping("/woofshare")
+    public List<Media> getAllWoofSharePhotos() {
+        return mediaRepository.findByMediaType(MediaType.WOOFSHARE_PHOTO);
     }
 }
