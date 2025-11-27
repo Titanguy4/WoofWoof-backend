@@ -1,6 +1,7 @@
 package com.woofwoof.stayservice.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import com.woofwoof.stayservice.repositories.subclass.AccomodationRepository;
 import com.woofwoof.stayservice.repositories.subclass.ActivityRepository;
 import com.woofwoof.stayservice.repositories.subclass.LearningSkillRepository;
 import com.woofwoof.stayservice.repositories.subclass.MealRepository;
+import com.woofwoof.stayservice.utils.GeoUtils;
 
 @Service
 public class StayService {
@@ -141,6 +143,33 @@ public class StayService {
         Stay stay = stayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getReviews();
+    }
+
+    /**
+     * Permit to find all stays around a point (latitude, longitude)
+     * A limit is define in case of http request to limit the flux
+     * 
+     * @param region
+     * @param stepLat
+     * @param stepLon
+     * @param limit
+     * @return List of the stays in the region provided
+     */
+    public List<Stay> findStaysAroundStep(String region, double stepLat, double stepLon, int limit) {
+        List<Stay> candidates = stayRepository.findByRegion(region);
+
+        return candidates.stream()
+                .sorted(Comparator.comparingDouble(stay -> {
+                    if (stay.getLocalisation() == null || stay.getLocalisation().length < 2)
+                        return Double.MAX_VALUE;
+
+                    return GeoUtils.distance(
+                            stepLat, stepLon,
+                            stay.getLocalisation()[0],
+                            stay.getLocalisation()[1]);
+                }))
+                .limit(limit)
+                .toList();
     }
 
 }

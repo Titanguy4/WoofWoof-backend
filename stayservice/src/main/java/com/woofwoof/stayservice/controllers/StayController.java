@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woofwoof.stayservice.entities.Stay;
@@ -50,5 +51,16 @@ public class StayController {
     @DeleteMapping("/{id}")
     public void deleteStay(@PathVariable Long id) {
         stayService.deleteStay(id);
+    }
+
+    // Controllers for woofplanner
+
+    @GetMapping("/search/proximity")
+    public List<Stay> getStaysByProximity(
+            @RequestParam String region,
+            @RequestParam double lat,
+            @RequestParam double lon,
+            @RequestParam(defaultValue = "10") int limit) {
+        return stayService.findStaysAroundStep(region, lat, lon, limit);
     }
 }

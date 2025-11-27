@@ -37,7 +37,7 @@ public class Stay {
     private String description;
 
     @Column(nullable = false)
-    private Long[] localisation;
+    private Double[] localisation;
 
     @Column
     private String department;

@@ -1,0 +1,23 @@
+server:
+  port: 8084
+
+spring:
+  profiles:
+    active:
+      - dev
+
+  application:
+    name: woofplanner
+
+application:
+  config:
+    stay-service-url: http://localhost:8081
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
