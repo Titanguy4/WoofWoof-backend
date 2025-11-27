@@ -19,7 +19,7 @@ public interface StayRepository extends JpaRepository<Stay, Long> {
 
     List<Stay> findByStatus(Boolean status);
 
-    Stay findByWooferId(Long wooferId);
+    Stay findByWooferId(UUID wooferId);
 
     Stay findByBookingId(Long bookingId);
 

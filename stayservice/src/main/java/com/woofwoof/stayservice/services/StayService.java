@@ -2,6 +2,7 @@ package com.woofwoof.stayservice.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public class StayService {
             MealRepository mealRepo,
             LearningSkillRepository skillRepo,
             AccomodationRepository accomodationRepo) {
+
         this.stayRepository = stayRepository;
         this.geocodingService = geocodingService;
         this.activityRepo = activityRepo;
@@ -44,19 +46,35 @@ public class StayService {
 
     public Stay createStay(Stay stay) {
 
-        if (stay.getTitle() == null || stay.getTitle().isEmpty())
+        if (stay.getTitle() == null || stay.getTitle().isEmpty()) {
             throw new IllegalArgumentException("Stay title cannot be null or empty");
+        }
 
+        // UUID woofer ID – envoyé par le frontend
+        UUID wooferId = stay.getWooferId();
+        if (wooferId == null) {
+            throw new IllegalArgumentException("WooferId cannot be null");
+        }
+
+        if (stayRepository.existsByWooferId(wooferId)) {
+            throw new IllegalArgumentException("User already has a stay");
+        }
+
+        // Géocoding
         if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
 
             double lat = stay.getLocalisation()[0]; // JSON = [lat, lon]
             double lon = stay.getLocalisation()[1];
 
             var info = geocodingService.getLocationInfo(lat, lon);
-            stay.setDepartment(info.getDepartment());
-            stay.setRegion(info.getRegion());
+
+            if (info != null) {
+                stay.setDepartment(info.getDepartment());
+                stay.setRegion(info.getRegion());
+            }
         }
 
+        // Activities
         List<Activity> finalActivities = new ArrayList<>();
         for (Activity a : stay.getActivities()) {
             Activity db = activityRepo.findById(a.getId())
@@ -66,6 +84,7 @@ public class StayService {
         }
         stay.setActivities(finalActivities);
 
+        // Meals
         List<Meal> finalMeals = new ArrayList<>();
         for (Meal m : stay.getMeals()) {
             Meal db = mealRepo.findById(m.getId())
@@ -75,6 +94,7 @@ public class StayService {
         }
         stay.setMeals(finalMeals);
 
+        // Learning Skills
         List<LearningSkill> finalSkills = new ArrayList<>();
         for (LearningSkill s : stay.getLearningSkills()) {
             LearningSkill db = skillRepo.findById(s.getId())
@@ -84,6 +104,7 @@ public class StayService {
         }
         stay.setLearningSkills(finalSkills);
 
+        // Accomodations
         List<Accomodation> finalAcc = new ArrayList<>();
         for (Accomodation ac : stay.getAccomodations()) {
             Accomodation db = accomodationRepo.findById(ac.getId())
@@ -108,9 +129,8 @@ public class StayService {
     public Stay updateStay(Stay stay) {
         if (!stayRepository.existsById(stay.getId())) {
             throw new RuntimeException("Stay with id " + stay.getId() + " does not exist.");
-        } else {
-            return stayRepository.save(stay);
         }
+        return stayRepository.save(stay);
     }
 
     public List<Meal> getMealsById(Long id) {
@@ -142,5 +162,4 @@ public class StayService {
                 .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getReviews();
     }
-
 }

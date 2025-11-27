@@ -51,7 +51,9 @@ class StayServiceTest {
     void createStay_setsDepartmentAndRegion_whenLocalisationProvided() {
         Stay stay = new Stay();
         stay.setTitle("Test stay");
-        stay.setLocalisation(new Long[]{48L, 2L}); // lat, lon
+        stay.setLocalisation(new Long[]{48L, 2L});
+        stay.setWooferId(UUID.randomUUID());
+
         stay.setActivities(List.of());
         stay.setMeals(List.of());
         stay.setLearningSkills(List.of());
@@ -59,6 +61,7 @@ class StayServiceTest {
 
         var info = new GeocodingService.LocationInfo("Occitanie", "Hérault");
         when(geocodingService.getLocationInfo(48, 2)).thenReturn(info);
+        when(stayRepository.existsByWooferId(any())).thenReturn(false);
         when(stayRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);
 
         Stay result = stayService.createStay(stay);
@@ -72,6 +75,7 @@ class StayServiceTest {
         Stay stay = new Stay();
         stay.setTitle("Complete stay");
         stay.setLocalisation(null);
+        stay.setWooferId(UUID.randomUUID());
 
         Activity a = new Activity();
         a.setId(1L);
@@ -86,6 +90,8 @@ class StayServiceTest {
         stay.setMeals(new ArrayList<>(List.of(m)));
         stay.setLearningSkills(new ArrayList<>(List.of(s)));
         stay.setAccomodations(new ArrayList<>(List.of(ac)));
+
+        when(stayRepository.existsByWooferId(any())).thenReturn(false);
 
         when(activityRepo.findById(1L)).thenReturn(Optional.of(new Activity()));
         when(mealRepo.findById(2L)).thenReturn(Optional.of(new Meal()));
