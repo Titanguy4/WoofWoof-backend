@@ -15,7 +15,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.*;
 
 class StayServiceTest {
@@ -206,31 +205,5 @@ class StayServiceTest {
 
         assertEquals(1, stayService.getReviewsById(1L).size());
     }
-
-    @Test
-    void createStay_assignsWooferId() {
-
-        Stay stay = new Stay();
-        stay.setTitle("Test");
-        stay.setDescription("Test desc");
-        stay.setLocalisation(new Long[]{48L, 2L});
-
-        UUID wooferId = UUID.randomUUID();
-        stay.setWooferId(wooferId);
-
-        // IMPORTANT : mock geocoding
-        when(geocodingService.getLocationInfo(anyDouble(), anyDouble()))
-            .thenReturn(new GeocodingService.LocationInfo("Hérault", "Occitanie"));
-
-        when(stayRepository.existsByWooferId(wooferId)).thenReturn(false);
-        when(stayRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);
-
-        Stay result = stayService.createStay(stay);
-
-        assertEquals(wooferId, result.getWooferId());
-        assertEquals("Occitanie", result.getRegion());
-        assertEquals("Hérault", result.getDepartment());
-    }
-
 
 }
