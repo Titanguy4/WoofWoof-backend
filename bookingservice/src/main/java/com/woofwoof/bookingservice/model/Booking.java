@@ -11,7 +11,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long missionId;
+    private Long stayId;
     private Long userId;
     private LocalDate startRequestedDate;
     private LocalDate endRequestedDate;
@@ -23,8 +23,8 @@ public class Booking {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Long getMissionId() { return missionId; }
-    public void setMissionId(Long missionId) { this.missionId = missionId; }
+    public Long getStayId() { return stayId; }
+    public void setStayId(Long stayId) { this.stayId = stayId; }
 
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
