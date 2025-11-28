@@ -2,6 +2,7 @@ package com.woofwoof.stayservice.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.woofwoof.stayservice.entities.subclass.Accomodation;
 import com.woofwoof.stayservice.entities.subclass.Activity;
@@ -55,7 +56,7 @@ public class Stay {
     private Boolean status;
 
     @Column(nullable = false)
-    private Long wooferId;
+    private UUID wooferId;
 
     private Long bookingId;
 
@@ -136,15 +137,4 @@ public class Stay {
         reviews.remove(review);
         review.setStay(null);
     }
-
-    /*
-     * /
-     * public void addPhotoId(Long photoId) {
-     * this.photoId.add(photoId);
-     * }
-     * 
-     * public void removePhotoId(Long photoId) {
-     * this.photoId.remove(photoId);
-     * }
-     */
 }

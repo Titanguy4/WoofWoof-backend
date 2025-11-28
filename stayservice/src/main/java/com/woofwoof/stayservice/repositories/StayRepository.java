@@ -1,6 +1,7 @@
 package com.woofwoof.stayservice.repositories;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,7 @@ public interface StayRepository extends JpaRepository<Stay, Long> {
 
     List<Stay> findByStatus(Boolean status);
 
-    Stay findByWooferId(Long wooferId);
+    List<Stay> findByWooferId(UUID wooferId);
 
     Stay findByBookingId(Long bookingId);
 

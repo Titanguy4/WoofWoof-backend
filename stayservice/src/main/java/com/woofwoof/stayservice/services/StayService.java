@@ -3,6 +3,7 @@ package com.woofwoof.stayservice.services;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -143,6 +144,13 @@ public class StayService {
         Stay stay = stayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getReviews();
+    }
+
+    public List<Long> getStayIdsByWooferId(UUID wooferId) {
+        return stayRepository.findByWooferId(wooferId)
+                .stream()
+                .map(Stay::getId)
+                .toList();
     }
 
     /**

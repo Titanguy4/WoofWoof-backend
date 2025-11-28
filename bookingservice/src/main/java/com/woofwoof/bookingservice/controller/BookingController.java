@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woofwoof.bookingservice.dto.BookingCreateDTO;
 import com.woofwoof.bookingservice.dto.BookingDTO;
+import com.woofwoof.bookingservice.entity.Booking;
+import com.woofwoof.bookingservice.entity.BookingStatus;
+import com.woofwoof.bookingservice.repository.BookingRepository;
 import com.woofwoof.bookingservice.service.BookingService;
 
 @RestController
@@ -20,6 +24,7 @@ import com.woofwoof.bookingservice.service.BookingService;
 public class BookingController {
 
     private BookingService bookingService;
+    private BookingRepository bookingRepository;
 
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
@@ -42,4 +47,26 @@ public class BookingController {
         BookingDTO bookingDto = bookingService.createBooking(booking);
         return ResponseEntity.ok(bookingDto);
     }
+
+    @GetMapping("/stay/{stayId}")
+    public List<Booking> getBookingsByStayId(@PathVariable Long stayId) {
+        return bookingRepository.findByStayId(stayId);
+    }
+
+    @PatchMapping("/accept/{id}")
+    public Booking acceptBooking(@PathVariable Long id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found with id " + id));
+        booking.setStatus(BookingStatus.ACCEPTED);
+        return bookingRepository.save(booking);
+    }
+
+    @PatchMapping("/reject/{id}")
+    public Booking rejectBooking(@PathVariable Long id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found with id " + id));
+        booking.setStatus(BookingStatus.REJECTED);
+        return bookingRepository.save(booking);
+    }
+
 }
