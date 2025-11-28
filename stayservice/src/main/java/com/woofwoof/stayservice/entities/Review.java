@@ -1,6 +1,7 @@
 package com.woofwoof.stayservice.entities;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,6 +33,8 @@ public class Review {
     private Date date;
 
     private String content;
+
+    private UUID userId;
 
     @ManyToOne
     @JoinColumn(name = "id_stay")
