@@ -2,6 +2,7 @@ package com.woofwoof.bookingservice.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "booking")
@@ -11,36 +12,77 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long missionId;
-    private Long userId;
+    private Long stayId;
+    private UUID userId;
     private LocalDate startRequestedDate;
     private LocalDate endRequestedDate;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
     private String email;
     private String number;
 
     // --- Getters et Setters ---
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getMissionId() { return missionId; }
-    public void setMissionId(Long missionId) { this.missionId = missionId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getStayId() {
+        return stayId;
+    }
 
-    public LocalDate getStartRequestedDate() { return startRequestedDate; }
-    public void setStartRequestedDate(LocalDate startRequestedDate) { this.startRequestedDate = startRequestedDate; }
+    public void setStayId(Long stayId) {
+        this.stayId = stayId;
+    }
 
-    public LocalDate getEndRequestedDate() { return endRequestedDate; }
-    public void setEndRequestedDate(LocalDate endRequestedDate) { this.endRequestedDate = endRequestedDate; }
+    public UUID getUserId() {
+        return userId;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public LocalDate getStartRequestedDate() {
+        return startRequestedDate;
+    }
 
-    public String getNumber() { return number; }
-    public void setNumber(String number) { this.number = number; }
+    public void setStartRequestedDate(LocalDate startRequestedDate) {
+        this.startRequestedDate = startRequestedDate;
+    }
+
+    public LocalDate getEndRequestedDate() {
+        return endRequestedDate;
+    }
+
+    public void setEndRequestedDate(LocalDate endRequestedDate) {
+        this.endRequestedDate = endRequestedDate;
+    }
+
+    public BookingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 }
