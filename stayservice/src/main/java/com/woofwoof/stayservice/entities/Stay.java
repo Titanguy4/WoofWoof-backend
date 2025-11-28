@@ -8,11 +8,11 @@ import com.woofwoof.stayservice.entities.subclass.Accomodation;
 import com.woofwoof.stayservice.entities.subclass.Activity;
 import com.woofwoof.stayservice.entities.subclass.LearningSkill;
 import com.woofwoof.stayservice.entities.subclass.Meal;
-import jakarta.persistence.EnumType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -79,14 +79,6 @@ public class Stay {
     @OneToMany(mappedBy = "stay", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
-
-    /*
-     * @OneToMany(mappedBy = "stay", cascade = CascadeType.ALL, orphanRemoval =
-     * true)
-     * 
-     * @Column(nullable = false)
-     * private List<Long> photoId;
-     */
 
     public void addAccommodation(Accomodation accomodation) {
         accomodations.add(accomodation);

@@ -43,50 +43,51 @@ public class DataSeeder implements CommandLineRunner {
                                 "Wine Farm Experience",
                                 "Experience life on a vineyard and help with grape harvesting.",
                                 StayType.FARM,
-                                new Long[] { 44449000L, 144000L });
+                                44.449000, 0.144000);
 
                 createStay(
                                 "Animal Farm Volunteer",
                                 "Care for farm animals and learn sustainable practices.",
                                 StayType.FARM,
-                                new Long[] { 49182900L, -370700L });
+                                49.182900, -0.370700);
 
                 createStay(
                                 "Dog Shelter Helper",
                                 "Assist with dog care, training and enrichment.",
                                 StayType.ANIMAL,
-                                new Long[] { 43296500L, 5369800L });
+                                43.296500, 5.369800);
 
                 createStay(
                                 "Wildlife Rescue Center",
                                 "Help rehabilitate injured wildlife for safe release.",
                                 StayType.ANIMAL,
-                                new Long[] { 42826300L, -6400L });
+                                42.826300, -0.006400);
 
                 createStay(
                                 "Beach Cleanup Volunteer",
                                 "Join coastal preservation efforts and marine cleanup.",
                                 StayType.ENVIRONMENTAL,
-                                new Long[] { 48117300L, -1677800L });
+                                48.117300, -1.677800);
 
                 createStay(
                                 "Art Workshop Assistant",
                                 "Assist in creative workshops and support local culture.",
                                 StayType.CULTURAL,
-                                new Long[] { 43710200L, 726200L });
+                                43.710200, 7.262200);
 
                 log.info("Stays seeded successfully!");
         }
 
-        private void createStay(String title, String description, StayType type, Long[] localisation) {
+        private void createStay(String title, String description, StayType type, double latitude, double longitude) {
 
                 Stay stay = Stay.builder()
                                 .title(title)
                                 .description(description)
                                 .type(type)
-                                .localisation(localisation)
+                                .localisation(new Double[] { (double) ((long) (latitude * 1_000_000.0)),
+                                                (double) ((long) (longitude * 1_000_000.0)) })
                                 .status(true)
-                                .wooferId(UUID.randomUUID()) // 👈 UUID OK ici
+                                .wooferId(UUID.randomUUID())
                                 .build();
 
                 // ➤ Ajouter department & region via GeocodingService
