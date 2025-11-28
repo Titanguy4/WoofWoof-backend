@@ -1,5 +1,6 @@
 package com.woofwoof.woofplanner.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class WoofPlannerController {
     }
 
     @PostMapping("/create")
-    public RoadTripPlan createPlan(@RequestBody RoadTripRequest request) {
-        return plannerService.planRoadTrip(request);
+    public ResponseEntity<RoadTripPlan> createPlan(@RequestBody RoadTripRequest request) {
+        RoadTripPlan roadTrip = plannerService.planRoadTrip(request);
+        return ResponseEntity.ok(roadTrip);
     }
-
 }

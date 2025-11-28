@@ -22,6 +22,12 @@ public class WoofPlannerService {
     }
 
     public RoadTripPlan planRoadTrip(RoadTripRequest request) {
+
+        int maxProposalsPerStep = 3;
+        if (request.maxProposalsPerStep() > 0) {
+            maxProposalsPerStep = request.maxProposalsPerStep();
+        }
+
         List<StepProposal> proposals = new ArrayList<>();
 
         for (StepRequest step : request.steps()) {
@@ -30,9 +36,7 @@ public class WoofPlannerService {
                     step.region(),
                     step.latitude(),
                     step.longitude(),
-                    request.maxProposalsPerStep());
-
-            // TODO filtrer par disponibilité avec BookingService
+                    maxProposalsPerStep);
 
             proposals.add(new StepProposal(step.cityName(), candidates));
         }

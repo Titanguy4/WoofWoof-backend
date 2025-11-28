@@ -2,7 +2,9 @@ package com.woofwoof.woofplanner.dto;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotNull;
+
 public record RoadTripRequest(
-        List<StepRequest> steps,
-        int maxProposalsPerStep) {
+                @NotNull List<StepRequest> steps,
+                int maxProposalsPerStep) {
 }

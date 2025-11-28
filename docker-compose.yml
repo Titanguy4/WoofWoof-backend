@@ -1,5 +1,5 @@
 services:
-  # --- EUREKA SERVER ---
+  # --- INFRASTRUCTURE (toujours actifs) ---
   eureka-server:
     build:
       context: ./eurekaserver
@@ -10,45 +10,54 @@ services:
     networks:
       - woofwoof-network
 
-  # --- API GATEWAY ---
   api-gateway:
     build:
       context: ./apigateway
       dockerfile: Dockerfile
-    container_name: api-gateway-dev
+    container_name: api-gateway
     ports:
       - "8080:8080"
     depends_on:
       - eureka-server
     restart: unless-stopped
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/ # pour s’assurer que la variable est disponible
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     networks:
       - woofwoof-network
 
-  # --- STAY SERVICE ---
-  stay-service:
-    build:
-      context: ./stayservice
-      dockerfile: Dockerfile
-    container_name: stay-service-dev
-    ports:
-      - "8081:8081"
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    container_name: keycloak
+    command: start-dev --import-realm
     env_file:
       - ./.env
-    depends_on:
-      - eureka-server
-      - stayservice-db
     environment:
-      STAY_SERVICE_DB_HOST: ${STAY_SERVICE_DB_HOST:-stayservice-db}
-      STAY_SERVICE_DB: ${STAY_SERVICE_DB}
-      STAY_SERVICE_DB_USER: ${STAY_SERVICE_DB_USER}
-      STAY_SERVICE_DB_PASSWORD: ${STAY_SERVICE_DB_PASSWORD}
-      STAY_SERVICE_DB_PORT: ${STAY_SERVICE_DB_PORT}
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    ports:
+      - "8000:8080"
+    depends_on:
+      - keycloak-db
+    volumes:
+      - ./keycloak-import.json:/opt/keycloak/data/import/keycloak-WoofWoof-config.json
     networks:
       - woofwoof-network
 
+  keycloak-db:
+    image: postgres:15-alpine
+    container_name: keycloak-postgres
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - keycloak_pgdata:/var/lib/postgresql/data
+    ports:
+      - 5435:5432
+    networks:
+      - woofwoof-network
+
+  # --- DATABASES (toujours actives) ---
   stayservice-db:
     image: postgres:15-alpine
     container_name: stay-service-postgres
@@ -63,22 +72,6 @@ services:
     networks:
       - woofwoof-network
 
-  # --- BOOKING SERVICE ---
-  booking-service:
-    build:
-      context: ./bookingservice
-      dockerfile: Dockerfile
-    container_name: booking-service-dev
-    env_file:
-      - ./.env
-    ports:
-      - "8082:8082"
-    depends_on:
-      - eureka-server
-      - bookingservice-db
-    networks:
-      - woofwoof-network
-
   bookingservice-db:
     image: postgres:15-alpine
     container_name: booking-service-postgres
@@ -90,30 +83,6 @@ services:
       - booking_pgdata:/var/lib/postgresql/data
     ports:
       - ${BOOKING_SERVICE_DB_PORT}:5432
-    networks:
-      - woofwoof-network
-
-  # --- MEDIA SERVICE ---
-
-  media-service:
-    build:
-      context: ./mediaservice
-      dockerfile: Dockerfile
-    container_name: media-service-dev
-    ports:
-      - "${MEDIA_SERVICE_PORT}:8083"
-    env_file:
-      - ./.env
-    depends_on:
-      - eureka-server
-      - mediaservice-db
-    environment:
-      MEDIA_SERVICE_DB_HOST: ${MEDIA_SERVICE_DB_HOST}
-      MEDIA_SERVICE_DB: ${MEDIA_SERVICE_DB}
-      MEDIA_SERVICE_USER: ${MEDIA_SERVICE_USER}
-      MEDIA_SERVICE_PASSWORD: ${MEDIA_SERVICE_PASSWORD}
-      MEDIA_SERVICE_PORT: ${MEDIA_SERVICE_PORT}
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
       - woofwoof-network
 
@@ -133,43 +102,78 @@ services:
     networks:
       - woofwoof-network
 
-  # --- KEYCLOAK ---
-  keycloak:
-    image: quay.io/keycloak/keycloak:25.0.0
-    container_name: keycloak
-    command: start-dev --import-realm
+  # --- SERVICES (avec profils) ---
+  stay-service:
+    profiles: ["all", "stay"]
+    build:
+      context: ./stayservice
+      dockerfile: Dockerfile
+    container_name: stay-service
+    ports:
+      - "8081:8081"
     env_file:
       - ./.env
-    environment:
-      KC_DB: postgres
-      KC_DB_URL_HOST: keycloak-db
-      KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
-      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-    ports:
-      - "8000:8080"
     depends_on:
-      - keycloak-db
-    volumes:
-      - ./keycloak-import.json:/opt/keycloak/data/import/keycloak-WoofWoof-config.json
+      - eureka-server
+      - stayservice-db
+    environment:
+      STAY_SERVICE_DB_HOST: ${STAY_SERVICE_DB_HOST:-stayservice-db}
+      STAY_SERVICE_DB: ${STAY_SERVICE_DB}
+      STAY_SERVICE_DB_USER: ${STAY_SERVICE_DB_USER}
+      STAY_SERVICE_DB_PASSWORD: ${STAY_SERVICE_DB_PASSWORD}
+      STAY_SERVICE_DB_PORT: ${STAY_SERVICE_DB_PORT}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
       - woofwoof-network
 
-  keycloak-db:
-    image: postgres:15-alpine
-    container_name: keycloak-postgres
-    restart: unless-stopped
+  booking-service:
+    profiles: ["all", "booking"]
+    build:
+      context: ./bookingservice
+      dockerfile: Dockerfile
+    container_name: booking-service
     env_file:
       - ./.env
-    environment:
-      POSTGRES_DB: ${KEYCLOAK_DB}
-      POSTGRES_USER: ${KEYCLOAK_DB_USER}
-      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-    volumes:
-      - keycloak_pgdata:/var/lib/postgresql/data
     ports:
-      - 5435:5432
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+      - bookingservice-db
+    networks:
+      - woofwoof-network
+
+  media-service:
+    profiles: ["all", "media"]
+    build:
+      context: ./mediaservice
+      dockerfile: Dockerfile
+    container_name: media-service
+    ports:
+      - "${MEDIA_SERVICE_PORT}:8083"
+    env_file:
+      - ./.env
+    depends_on:
+      - eureka-server
+      - mediaservice-db
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    networks:
+      - woofwoof-network
+
+  woofplanner-service:
+    profiles: ["all", "woofplanner"]
+    build:
+      context: ./woofplanner
+      dockerfile: Dockerfile
+    container_name: woofplanner-service
+    env_file:
+      - ./.env
+    ports:
+      - "8084:8084"
+    depends_on:
+      - eureka-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - woofwoof-network
 
