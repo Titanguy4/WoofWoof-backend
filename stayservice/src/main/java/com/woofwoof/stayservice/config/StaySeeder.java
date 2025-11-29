@@ -23,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@Profile({ "dev", "test" })
-public class DataSeeder implements CommandLineRunner {
+@Profile({ "default", "dev", "test" })
+public class StaySeeder implements CommandLineRunner {
 
         private final StayRepository stayRepository;
         private final GeocodingService geocodingService;
@@ -121,7 +121,6 @@ public class DataSeeder implements CommandLineRunner {
         }
 
         private void applyLocationInfo(Stay stay) {
-                // Coordinates are stored in microdegrees => divide
                 double lat = stay.getLocalisation()[0] / 1_000_000.0;
                 double lon = stay.getLocalisation()[1] / 1_000_000.0;
 

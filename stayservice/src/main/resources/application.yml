@@ -2,17 +2,13 @@ server:
   port: 8081
 
 spring:
-  profiles:
-    active:
-      - dev
-
   application:
     name: stay-service
 
   datasource:
-    url: jdbc:postgresql://${STAY_SERVICE_DB_HOST:stayservice-db}:5432/${STAY_SERVICE_DB:staydb}
-    username: ${STAY_SERVICE_DB_USER:stayuser}
-    password: ${STAY_SERVICE_DB_PASSWORD:staypass}
+    url: jdbc:postgresql://localhost:5433/${STAY_SERVICE_DB}
+    username: ${STAY_SERVICE_DB_USER}
+    password: ${STAY_SERVICE_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -30,9 +26,23 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
 
 logging:
   level:
     "[com.woofwoof.stayservice]": DEBUG
     "[org.springframework.security.oauth2.core]": DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: jdbc:postgresql://stayservice-db:5432/${STAY_SERVICE_DB}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
