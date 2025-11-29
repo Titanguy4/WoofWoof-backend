@@ -8,10 +8,12 @@ import com.woofwoof.stayservice.entities.subclass.Accomodation;
 import com.woofwoof.stayservice.entities.subclass.Activity;
 import com.woofwoof.stayservice.entities.subclass.LearningSkill;
 import com.woofwoof.stayservice.entities.subclass.Meal;
+import jakarta.persistence.EnumType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -36,6 +38,10 @@ public class Stay {
 
     @Column(nullable = false)
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StayType type;
 
     @Column(nullable = false)
     private Long[] localisation;

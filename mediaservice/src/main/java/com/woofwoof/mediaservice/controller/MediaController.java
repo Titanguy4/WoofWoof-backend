@@ -10,6 +10,7 @@ import com.woofwoof.mediaservice.model.MediaType;
 import com.woofwoof.mediaservice.repository.MediaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/medias")
@@ -44,7 +45,7 @@ public class MediaController {
 
     // function to get profile photo for profile page
     @GetMapping("/profile/{userId}")
-    public Media getProfilePhotoByUserId(@PathVariable Long userId) {
+    public Media getProfilePhotoByUserId(@PathVariable UUID userId) {
         return mediaRepository.findByMediaTypeAndUserId(MediaType.PROFILE_PHOTO, userId)
                 .stream()
                 .findFirst() // prend la première (et normalement unique) photo
