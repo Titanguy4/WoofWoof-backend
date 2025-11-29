@@ -37,21 +37,7 @@ public class DataSeeder implements CommandLineRunner {
         }
     }
 
-<<<<<<< HEAD
-        private void seedStays() {
-                // Séjour 1: Ferme bio en Bretagne
-                Stay stayBretagne = Stay.builder()
-                                .title("Ferme bio en Bretagne")
-                                .description("Découvrez l'agriculture biologique dans une ferme familiale au cœur de la Bretagne")
-                                .localisation(new Long[] { 48117300L, -1677800L })
-                                .department("Ille-et-Vilaine")
-                                .region("Bretagne")
-                                .status(true)
-                                .wooferId(UUID.randomUUID())
-                                .build();
-=======
     private void seedStays() {
->>>>>>> dev
 
         // ----------------- Stay 1 -----------------
         Stay stay1 = Stay.builder()
@@ -60,7 +46,7 @@ public class DataSeeder implements CommandLineRunner {
                 .type(StayType.FARM)
                 .localisation(new Long[]{44449000L, 144000L})
                 .status(true)
-                .wooferId(1L)
+                .wooferId(UUID.randomUUID())
                 .build();
 
         stay1.setAccomodations(createDefaultAccomodations(stay1, 1));
@@ -79,7 +65,7 @@ public class DataSeeder implements CommandLineRunner {
                 .type(StayType.FARM)
                 .localisation(new Long[]{49182900L, -370700L})
                 .status(true)
-                .wooferId(2L)
+                .wooferId(UUID.randomUUID())
                 .build();
 
         stay2.setAccomodations(createDefaultAccomodations(stay2, 8));
@@ -98,7 +84,7 @@ public class DataSeeder implements CommandLineRunner {
                 .type(StayType.ANIMAL)
                 .localisation(new Long[]{43296500L, 5369800L})
                 .status(true)
-                .wooferId(3L)
+                .wooferId(UUID.randomUUID())
                 .build();
 
         stay3.setAccomodations(createDefaultAccomodations(stay3, 15));
@@ -117,7 +103,7 @@ public class DataSeeder implements CommandLineRunner {
                 .type(StayType.ANIMAL)
                 .localisation(new Long[]{42826300L, -6400L})
                 .status(true)
-                .wooferId(4L)
+                .wooferId(UUID.randomUUID())
                 .build();
 
         stay4.setAccomodations(createDefaultAccomodations(stay4, 22));
@@ -129,18 +115,6 @@ public class DataSeeder implements CommandLineRunner {
 
         stayRepository.save(stay4);
 
-<<<<<<< HEAD
-                // Séjour 2: Vignoble en Provence
-                Stay stayProvence = Stay.builder()
-                                .title("Vignoble familial en Provence")
-                                .description("Participez aux vendanges et découvrez les secrets de la viticulture provençale")
-                                .localisation(new Long[] { 43296482L, 5369780L })
-                                .department("Bouches-du-Rhône")
-                                .region("Provence-Alpes-Côte d'Azur")
-                                .status(true)
-                                .wooferId(UUID.randomUUID())
-                                .build();
-=======
         // ----------------- Stay 5 -----------------
         Stay stay5 = Stay.builder()
                 .title("Beach Cleanup Volunteer")
@@ -148,9 +122,8 @@ public class DataSeeder implements CommandLineRunner {
                 .type(StayType.ENVIRONMENTAL)
                 .localisation(new Long[]{48117300L, -1677800L})
                 .status(true)
-                .wooferId(5L)
+                .wooferId(UUID.randomUUID())
                 .build();
->>>>>>> dev
 
         stay5.setAccomodations(createDefaultAccomodations(stay5, 29));
         stay5.addActivity(Activity.builder().label("Beach cleanup").stay(stay5).build());
@@ -168,7 +141,7 @@ public class DataSeeder implements CommandLineRunner {
                 .type(StayType.CULTURAL)
                 .localisation(new Long[]{43710200L, 726200L})
                 .status(true)
-                .wooferId(6L)
+                .wooferId(UUID.randomUUID())
                 .build();
 
         stay6.setAccomodations(createDefaultAccomodations(stay6, 36));
@@ -183,48 +156,6 @@ public class DataSeeder implements CommandLineRunner {
         log.info("Created 6 stays with activities, learning skills, meals, accommodations, and reviews.");
     }
 
-<<<<<<< HEAD
-                stayProvence.addMeal(meal3);
-
-                Accomodation accommodation2 = Accomodation.builder()
-                                .label("Chambre privée")
-                                .stay(stayProvence)
-                                .build();
-
-                stayProvence.addAccommodation(accommodation2);
-
-                // Séjour 3: Éco-construction dans les Alpes
-                Stay stayAlpes = Stay.builder()
-                                .title("Éco-construction en montagne")
-                                .description("Apprenez les techniques de construction écologique dans un cadre montagnard")
-                                .localisation(new Long[] { 45188529L, 5724524L })
-                                .department("Isère")
-                                .region("Auvergne-Rhône-Alpes")
-                                .status(false)
-                                .wooferId(UUID.randomUUID())
-                                .build();
-
-                Activity activity5 = Activity.builder()
-                                .label("Construction paille")
-                                .stay(stayAlpes)
-                                .build();
-
-                stayAlpes.addActivity(activity5);
-
-                LearningSkill skill3 = LearningSkill.builder()
-                                .label("Éco-construction")
-                                .stay(stayAlpes)
-                                .build();
-
-                stayAlpes.addLearningSkill(skill3);
-
-                // Sauvegarder tous les séjours
-                stayRepository.save(stayBretagne);
-                stayRepository.save(stayProvence);
-                stayRepository.save(stayAlpes);
-
-                log.info("Created {} stays with associated data", 3);
-=======
     private java.util.List<Accomodation> createDefaultAccomodations(Stay stay, long startId) {
         java.util.List<Accomodation> list = new java.util.ArrayList<>();
         String[] labels = { "Shared housing", "AC", "Wifi", "Flexible schedule", "All meals", "TV", "Hot water" };
@@ -234,7 +165,6 @@ public class DataSeeder implements CommandLineRunner {
                     .stay(stay)
                     .build();
             list.add(a);
->>>>>>> dev
         }
         return list;
     }
