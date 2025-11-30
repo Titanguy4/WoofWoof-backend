@@ -16,6 +16,7 @@ import com.woofwoof.stayservice.entities.subclass.LearningSkill;
 import com.woofwoof.stayservice.entities.subclass.Meal;
 import com.woofwoof.stayservice.repositories.StayRepository;
 import com.woofwoof.stayservice.services.GeocodingService;
+import com.woofwoof.stayservice.services.GeocodingService.CityLocation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@Profile({ "default", "dev", "test" })
+@Profile({ "default", "dev", "test", "docker" })
 public class StaySeeder implements CommandLineRunner {
 
         private final StayRepository stayRepository;
@@ -39,61 +40,82 @@ public class StaySeeder implements CommandLineRunner {
 
                 log.info("Seeding stays...");
 
-                createStay(
+                // ✨ Nouveau : Création avec nom de ville
+                createStayByCity(
                                 "Wine Farm Experience",
                                 "Experience life on a vineyard and help with grape harvesting.",
                                 StayType.FARM,
-                                44.449000, 0.144000);
+                                "Bordeaux");
 
-                createStay(
+                Thread.sleep(1100); // Respect du rate limiting
+
+                createStayByCity(
                                 "Animal Farm Volunteer",
                                 "Care for farm animals and learn sustainable practices.",
                                 StayType.FARM,
-                                49.182900, -0.370700);
+                                "Caen");
 
-                createStay(
+                Thread.sleep(1100);
+
+                createStayByCity(
                                 "Dog Shelter Helper",
                                 "Assist with dog care, training and enrichment.",
                                 StayType.ANIMAL,
-                                43.296500, 5.369800);
+                                "Marseille");
 
-                createStay(
+                Thread.sleep(1100);
+
+                createStayByCity(
                                 "Wildlife Rescue Center",
                                 "Help rehabilitate injured wildlife for safe release.",
                                 StayType.ANIMAL,
-                                42.826300, -0.006400);
+                                "Pau");
 
-                createStay(
+                Thread.sleep(1100);
+
+                createStayByCity(
                                 "Beach Cleanup Volunteer",
                                 "Join coastal preservation efforts and marine cleanup.",
                                 StayType.ENVIRONMENTAL,
-                                48.117300, -1.677800);
+                                "Rennes");
 
-                createStay(
+                Thread.sleep(1100);
+
+                createStayByCity(
                                 "Art Workshop Assistant",
                                 "Assist in creative workshops and support local culture.",
                                 StayType.CULTURAL,
-                                43.710200, 7.262200);
+                                "Nice");
 
                 log.info("Stays seeded successfully!");
         }
 
-        private void createStay(String title, String description, StayType type, double latitude, double longitude) {
+        // ✨ Nouvelle méthode avec nom de ville
+        private void createStayByCity(String title, String description, StayType type, String cityName) {
+
+                // Récupérer les infos de la ville via l'API
+                CityLocation cityLocation = geocodingService.getCityLocation(cityName);
+
+                if (cityLocation == null) {
+                        log.warn("Could not find city: {}. Skipping stay creation.", cityName);
+                        return;
+                }
 
                 Stay stay = Stay.builder()
                                 .title(title)
                                 .description(description)
                                 .type(type)
-                                .localisation(new Double[] { (double) ((long) (latitude * 1_000_000.0)),
-                                                (double) ((long) (longitude * 1_000_000.0)) })
+                                .localisation(new Double[] {
+                                                (double) cityLocation.getLat(),
+                                                (double) cityLocation.getLon()
+                                })
+                                .department(cityLocation.getDepartment())
+                                .region(cityLocation.getRegion())
                                 .status(true)
                                 .wooferId(UUID.randomUUID())
                                 .build();
 
-                // ➤ Ajouter department & region via GeocodingService
-                applyLocationInfo(stay);
-
-                // ➤ Ajouter accommodations
+                // Ajouter accommodations
                 var labels = new String[] {
                                 "Shared housing", "AC", "Wifi", "Flexible schedule",
                                 "All meals", "TV", "Hot water"
@@ -104,29 +126,22 @@ public class StaySeeder implements CommandLineRunner {
                 }
                 stay.setAccomodations(acc);
 
-                // ➤ Activities
+                // Activities
                 stay.addActivity(Activity.builder().label("General help").stay(stay).build());
 
-                // ➤ Learning Skills
+                // Learning Skills
                 stay.addLearningSkill(LearningSkill.builder().label("Local knowledge").stay(stay).build());
 
-                // ➤ Meals
+                // Meals
                 stay.addMeal(Meal.builder().label("Breakfast").stay(stay).build());
                 stay.addMeal(Meal.builder().label("Lunch").stay(stay).build());
 
-                // ➤ Review
+                // Review
                 stay.addReview(Review.builder().rating(5L).stay(stay).build());
 
                 stayRepository.save(stay);
-        }
 
-        private void applyLocationInfo(Stay stay) {
-                double lat = stay.getLocalisation()[0] / 1_000_000.0;
-                double lon = stay.getLocalisation()[1] / 1_000_000.0;
-
-                var info = geocodingService.getLocationInfo(lat, lon);
-
-                stay.setDepartment(info.getDepartment());
-                stay.setRegion(info.getRegion());
+                log.info("Created stay '{}' in {} ({}, {})",
+                                title, cityName, cityLocation.getDepartment(), cityLocation.getRegion());
         }
 }

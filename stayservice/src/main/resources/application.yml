@@ -6,7 +6,7 @@ spring:
     name: stay-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/${STAY_SERVICE_DB}
+    url: jdbc:postgresql://localhost:${STAY_SERVICE_DB_PORT}/${STAY_SERVICE_DB}
     username: ${STAY_SERVICE_DB_USER}
     password: ${STAY_SERVICE_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -40,7 +40,7 @@ spring:
       on-profile: docker
 
   datasource:
-    url: jdbc:postgresql://stayservice-db:5432/${STAY_SERVICE_DB}
+    url: jdbc:postgresql://stayservice-db:5432/stayservicedb
 
 eureka:
   client:
