@@ -117,12 +117,7 @@ services:
       - eureka-server
       - stayservice-db
     environment:
-      STAY_SERVICE_DB_HOST: ${STAY_SERVICE_DB_HOST:-stayservice-db}
-      STAY_SERVICE_DB: ${STAY_SERVICE_DB}
-      STAY_SERVICE_DB_USER: ${STAY_SERVICE_DB_USER}
-      STAY_SERVICE_DB_PASSWORD: ${STAY_SERVICE_DB_PASSWORD}
-      STAY_SERVICE_DB_PORT: ${STAY_SERVICE_DB_PORT}
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - woofwoof-network
 
@@ -139,6 +134,8 @@ services:
     depends_on:
       - eureka-server
       - bookingservice-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - woofwoof-network
 

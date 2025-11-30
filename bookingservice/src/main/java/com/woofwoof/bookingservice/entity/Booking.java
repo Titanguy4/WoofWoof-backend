@@ -3,6 +3,7 @@ package com.woofwoof.bookingservice.entity;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -29,6 +30,7 @@ public class Booking {
 
     private Long stayId;
 
+    @Column(columnDefinition = "uuid")
     private UUID userId;
 
     private LocalDate startRequestedDate;
