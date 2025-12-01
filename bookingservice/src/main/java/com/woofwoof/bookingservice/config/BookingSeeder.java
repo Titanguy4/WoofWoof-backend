@@ -27,9 +27,9 @@ public class BookingSeeder {
                     null,
                     1L,
                     UUID.fromString("8d75d3af-1066-430c-9a1d-579c8004a563"),
-                    LocalDate.of(2025, 1, 10),
-                    LocalDate.of(2025, 1, 15),
-                    BookingStatus.PENDING,
+                    LocalDate.of(2026, 1, 10),
+                    LocalDate.of(2026, 1, 15),
+                    BookingStatus.ACCEPTED,
                     "test1@example.com",
                     "0612345678"));
 
@@ -37,18 +37,18 @@ public class BookingSeeder {
             bookingRepository.save(new Booking(
                     null,
                     2L,
-                    UUID.fromString("7b64c2be-0955-320b-8a2c-468b7003b452"),
-                    LocalDate.of(2025, 2, 5),
-                    LocalDate.of(2025, 2, 12),
-                    BookingStatus.ACCEPTED,
+                    UUID.fromString("8d75d3af-1066-430c-9a1d-579c8004a563"),
+                    LocalDate.of(2026, 2, 5),
+                    LocalDate.of(2026, 2, 12),
+                    BookingStatus.PENDING,
                     "test2@example.com",
                     "0698765432"));
 
             // Booking 3
             bookingRepository.save(new Booking(
                     null,
-                    1L,
-                    UUID.fromString("9e86d4cf-1177-541d-9b3d-670c9005c674"),
+                    5L,
+                    UUID.fromString("8d75d3af-1066-430c-9a1d-579c8004a563"),
                     LocalDate.of(2025, 3, 1),
                     LocalDate.of(2025, 3, 5),
                     BookingStatus.REJECTED,
@@ -60,8 +60,8 @@ public class BookingSeeder {
                     null,
                     3L,
                     UUID.fromString("8d75d3af-1066-430c-9a1d-579c8004a563"),
-                    LocalDate.of(2025, 3, 20),
-                    LocalDate.of(2025, 3, 25),
+                    LocalDate.of(2026, 3, 20),
+                    LocalDate.of(2026, 3, 25),
                     BookingStatus.PENDING,
                     "test4@example.com",
                     "0642424242"));
@@ -70,10 +70,10 @@ public class BookingSeeder {
             bookingRepository.save(new Booking(
                     null,
                     4L,
-                    UUID.fromString("af97e5e0-2288-652e-ac4e-781da106d785"),
-                    LocalDate.of(2025, 4, 10),
-                    LocalDate.of(2025, 4, 18),
-                    BookingStatus.ACCEPTED,
+                    UUID.fromString("8d75d3af-1066-430c-9a1d-579c8004a563"),
+                    LocalDate.of(2026, 4, 10),
+                    LocalDate.of(2026, 4, 18),
+                    BookingStatus.PENDING,
                     "contact@client.com",
                     "0600112233"));
 
