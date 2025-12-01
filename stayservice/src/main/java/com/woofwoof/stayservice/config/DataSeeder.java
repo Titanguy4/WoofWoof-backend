@@ -92,7 +92,8 @@ public class DataSeeder implements CommandLineRunner {
                 .type(type)
                 .localisation(localisation)
                 .status(true)
-                .wooferId(UUID.randomUUID())   // 👈 UUID OK ici
+                .wooferId(UUID.fromString("77d98606-a1ab-4313-9cb6-88d1f188f8ee"))   
+                .wooferName("LOOOOOL")
                 .build();
 
         // ➤ Ajouter department & region via GeocodingService

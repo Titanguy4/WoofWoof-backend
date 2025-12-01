@@ -1,6 +1,7 @@
 package com.woofwoof.bookingservice.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,12 @@ public class BookingController {
     public List<Booking> getBookingsByStayId(@PathVariable Long stayId) {
         return bookingRepository.findByStayId(stayId);
     }
+
+    @GetMapping("/user/{userId}")
+    public List<Booking> getBookingsByUserId(@PathVariable UUID userId) {
+        return bookingRepository.findByUserId(userId);
+    }
+
 
     @PatchMapping("/accept/{id}")
     public Booking acceptBooking(@PathVariable Long id) {

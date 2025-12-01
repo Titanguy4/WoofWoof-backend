@@ -9,6 +9,7 @@ import com.woofwoof.mediaservice.model.Media;
 import com.woofwoof.mediaservice.model.MediaType;
 import com.woofwoof.mediaservice.repository.MediaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,5 +64,48 @@ public class MediaController {
     @GetMapping("/woofshare")
     public List<Media> getAllWoofSharePhotos() {
         return mediaRepository.findByMediaType(MediaType.WOOFSHARE_PHOTO);
+    }
+
+    @PostMapping
+    public Media createMedia(@RequestBody Media media) {
+
+        if (media.getMediaType() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Media type is required");
+        }
+
+        switch (media.getMediaType()) {
+
+            case PROFILE_PHOTO:
+                if (media.getUserId() == null) {
+                    throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "userId is required for PROFILE_PHOTO"
+                    );
+                }
+                break;
+
+            case STAY_PHOTO:
+            case WOOFSHARE_PHOTO:
+                if (media.getStayId() == null) {
+                    throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "stayId is required for this media type"
+                    );
+                }
+                break;
+
+            default:
+                throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, 
+                    "Unknown media type"
+                );
+        }
+
+        // auto date
+        if (media.getPostDate() == null) {
+            media.setPostDate(LocalDate.now());
+        }
+
+        return mediaRepository.save(media);
     }
 }

@@ -48,52 +48,71 @@ public class StayService {
         if (stay.getTitle() == null || stay.getTitle().isEmpty())
             throw new IllegalArgumentException("Stay title cannot be null or empty");
 
-        if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
+        // --- GEOLOCATION ---
+        if ((stay.getDepartment() == null || stay.getDepartment().isEmpty()) ||
+                (stay.getRegion() == null || stay.getRegion().isEmpty())) {
 
-            double lat = stay.getLocalisation()[0]; // JSON = [lat, lon]
-            double lon = stay.getLocalisation()[1];
+            if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
+                double lat = stay.getLocalisation()[0];
+                double lon = stay.getLocalisation()[1];
 
-            var info = geocodingService.getLocationInfo(lat, lon);
-            stay.setDepartment(info.getDepartment());
-            stay.setRegion(info.getRegion());
+                var info = geocodingService.getLocationInfo(lat, lon);
+
+                // On ne remplace que si null
+                if (stay.getDepartment() == null || stay.getDepartment().isEmpty()) {
+                    stay.setDepartment(info.getDepartment());
+                }
+                if (stay.getRegion() == null || stay.getRegion().isEmpty()) {
+                    stay.setRegion(info.getRegion());
+                }
+            }
         }
 
-        List<Activity> finalActivities = new ArrayList<>();
+        // --- ACTIVITIES ---
+        List<Activity> newActivities = new ArrayList<>();
         for (Activity a : stay.getActivities()) {
-            Activity db = activityRepo.findById(a.getId())
-                    .orElseThrow(() -> new RuntimeException("Activity not found: " + a.getId()));
-            db.setStay(stay);
-            finalActivities.add(db);
+            Activity act = Activity.builder()
+                    .label(a.getLabel())
+                    .stay(stay)
+                    .build();
+            newActivities.add(act);
         }
-        stay.setActivities(finalActivities);
+        stay.setActivities(newActivities);
 
-        List<Meal> finalMeals = new ArrayList<>();
+        // --- MEALS ---
+        List<Meal> newMeals = new ArrayList<>();
         for (Meal m : stay.getMeals()) {
-            Meal db = mealRepo.findById(m.getId())
-                    .orElseThrow(() -> new RuntimeException("Meal not found: " + m.getId()));
-            db.setStay(stay);
-            finalMeals.add(db);
+            Meal meal = Meal.builder()
+                    .label(m.getLabel())
+                    .stay(stay)
+                    .build();
+            newMeals.add(meal);
         }
-        stay.setMeals(finalMeals);
+        stay.setMeals(newMeals);
 
-        List<LearningSkill> finalSkills = new ArrayList<>();
+        // --- SKILLS ---
+        List<LearningSkill> newSkills = new ArrayList<>();
         for (LearningSkill s : stay.getLearningSkills()) {
-            LearningSkill db = skillRepo.findById(s.getId())
-                    .orElseThrow(() -> new RuntimeException("Skill not found: " + s.getId()));
-            db.setStay(stay);
-            finalSkills.add(db);
+            LearningSkill skill = LearningSkill.builder()
+                    .label(s.getLabel())
+                    .stay(stay)
+                    .build();
+            newSkills.add(skill);
         }
-        stay.setLearningSkills(finalSkills);
+        stay.setLearningSkills(newSkills);
 
-        List<Accomodation> finalAcc = new ArrayList<>();
-        for (Accomodation ac : stay.getAccomodations()) {
-            Accomodation db = accomodationRepo.findById(ac.getId())
-                    .orElseThrow(() -> new RuntimeException("Accomodation not found: " + ac.getId()));
-            db.setStay(stay);
-            finalAcc.add(db);
+        // --- ACCOMMODATIONS ---
+        List<Accomodation> newAcc = new ArrayList<>();
+        for (Accomodation a : stay.getAccomodations()) {
+            Accomodation acc = Accomodation.builder()
+                    .label(a.getLabel())
+                    .stay(stay)
+                    .build();
+            newAcc.add(acc);
         }
-        stay.setAccomodations(finalAcc);
+        stay.setAccomodations(newAcc);
 
+        // --- SAVE ---
         return stayRepository.save(stay);
     }
 
@@ -145,12 +164,10 @@ public class StayService {
     }
 
     public List<Long> getStayIdsByWooferId(UUID wooferId) {
-    return stayRepository.findByWooferId(wooferId)
-            .stream()
-            .map(Stay::getId)
-            .toList();
-}
-
-
+        return stayRepository.findByWooferId(wooferId)
+                .stream()
+                .map(Stay::getId)
+                .toList();
+    }
 
 }

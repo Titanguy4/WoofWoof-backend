@@ -54,8 +54,8 @@ public class StayController {
     }
 
     @GetMapping("/woofer/{wooferId}/ids")
-public List<Long> getStayIdsByWoofer(@PathVariable UUID wooferId) {
-    return stayService.getStayIdsByWooferId(wooferId);
-}
+    public List<Long> getStayIdsByWoofer(@PathVariable UUID wooferId) {
+        return stayService.getStayIdsByWooferId(wooferId);
+    }
 
 }
