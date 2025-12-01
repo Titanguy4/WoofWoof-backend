@@ -1,6 +1,7 @@
 package com.woofwoof.bookingservice.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -51,6 +52,11 @@ public class BookingController {
     @GetMapping("/stay/{stayId}")
     public List<Booking> getBookingsByStayId(@PathVariable Long stayId) {
         return bookingRepository.findByStayId(stayId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Booking> getBookingsByUserId(@PathVariable UUID userId) {
+        return bookingRepository.findByUserId(userId);
     }
 
     @PatchMapping("/accept/{id}")
