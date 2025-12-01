@@ -56,8 +56,13 @@ public class StayService {
             double lon = stay.getLocalisation()[1];
 
             var info = geocodingService.getLocationInfo(lat, lon);
-            stay.setDepartment(info.getDepartment());
-            stay.setRegion(info.getRegion());
+            // On ne remplace que si null
+                if (stay.getDepartment() == null || stay.getDepartment().isEmpty()) {
+                    stay.setDepartment(info.getDepartment());
+                }
+                if (stay.getRegion() == null || stay.getRegion().isEmpty()) {
+                    stay.setRegion(info.getRegion());
+                }
         }
 
         List<Activity> finalActivities = new ArrayList<>();

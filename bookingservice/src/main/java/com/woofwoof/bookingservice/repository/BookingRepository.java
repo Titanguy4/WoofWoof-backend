@@ -2,6 +2,7 @@ package com.woofwoof.bookingservice.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("endDate") LocalDate end);
 
     List<Booking> findByStayId(Long stayId);
+    List<Booking> findByUserId(UUID userId);
 }

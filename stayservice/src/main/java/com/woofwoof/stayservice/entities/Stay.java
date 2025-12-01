@@ -60,6 +60,9 @@ public class Stay {
 
     private Long bookingId;
 
+    @Column
+    private String wooferName;
+
     @OneToMany(mappedBy = "stay", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Activity> activities = new ArrayList<>();

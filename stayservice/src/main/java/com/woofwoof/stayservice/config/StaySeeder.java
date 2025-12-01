@@ -112,7 +112,8 @@ public class StaySeeder implements CommandLineRunner {
                                 .department(cityLocation.getDepartment())
                                 .region(cityLocation.getRegion())
                                 .status(true)
-                                .wooferId(UUID.randomUUID())
+                                .wooferId(UUID.fromString("77d98606-a1ab-4313-9cb6-88d1f188f8ee"))
+                                .wooferName("LOOOOOL")
                                 .build();
 
                 // Ajouter accommodations
