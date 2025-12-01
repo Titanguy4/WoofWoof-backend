@@ -47,62 +47,109 @@ public class StayService {
 
     public Stay createStay(Stay stay) {
 
-        if (stay.getTitle() == null || stay.getTitle().isEmpty())
-            throw new IllegalArgumentException("Stay title cannot be null or empty");
+    if (stay.getTitle() == null || stay.getTitle().isEmpty())
+        throw new IllegalArgumentException("Stay title cannot be null or empty");
 
-        if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
+    // --- Auto-fill department & region if coordinates present ---
+    if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
 
-            double lat = stay.getLocalisation()[0]; // JSON = [lat, lon]
-            double lon = stay.getLocalisation()[1];
+        double lat = stay.getLocalisation()[0];
+        double lon = stay.getLocalisation()[1];
 
-            var info = geocodingService.getLocationInfo(lat, lon);
-            // On ne remplace que si null
-                if (stay.getDepartment() == null || stay.getDepartment().isEmpty()) {
-                    stay.setDepartment(info.getDepartment());
-                }
-                if (stay.getRegion() == null || stay.getRegion().isEmpty()) {
-                    stay.setRegion(info.getRegion());
-                }
+        var info = geocodingService.getLocationInfo(lat, lon);
+
+        if (stay.getDepartment() == null || stay.getDepartment().isEmpty()) {
+            stay.setDepartment(info.getDepartment());
         }
-
-        List<Activity> finalActivities = new ArrayList<>();
-        for (Activity a : stay.getActivities()) {
-            Activity db = activityRepo.findById(a.getId())
-                    .orElseThrow(() -> new RuntimeException("Activity not found: " + a.getId()));
-            db.setStay(stay);
-            finalActivities.add(db);
+        if (stay.getRegion() == null || stay.getRegion().isEmpty()) {
+            stay.setRegion(info.getRegion());
         }
-        stay.setActivities(finalActivities);
-
-        List<Meal> finalMeals = new ArrayList<>();
-        for (Meal m : stay.getMeals()) {
-            Meal db = mealRepo.findById(m.getId())
-                    .orElseThrow(() -> new RuntimeException("Meal not found: " + m.getId()));
-            db.setStay(stay);
-            finalMeals.add(db);
-        }
-        stay.setMeals(finalMeals);
-
-        List<LearningSkill> finalSkills = new ArrayList<>();
-        for (LearningSkill s : stay.getLearningSkills()) {
-            LearningSkill db = skillRepo.findById(s.getId())
-                    .orElseThrow(() -> new RuntimeException("Skill not found: " + s.getId()));
-            db.setStay(stay);
-            finalSkills.add(db);
-        }
-        stay.setLearningSkills(finalSkills);
-
-        List<Accomodation> finalAcc = new ArrayList<>();
-        for (Accomodation ac : stay.getAccomodations()) {
-            Accomodation db = accomodationRepo.findById(ac.getId())
-                    .orElseThrow(() -> new RuntimeException("Accomodation not found: " + ac.getId()));
-            db.setStay(stay);
-            finalAcc.add(db);
-        }
-        stay.setAccomodations(finalAcc);
-
-        return stayRepository.save(stay);
     }
+
+    // -------- ACTIVITIES --------
+    List<Activity> finalActivities = new ArrayList<>();
+    for (Activity a : stay.getActivities()) {
+        Activity db;
+
+        if (a.getId() != null) {
+            db = activityRepo.findById(a.getId())
+                    .orElseThrow(() -> new RuntimeException("Activity not found: " + a.getId()));
+        } else {
+            // create new
+            db = Activity.builder()
+                    .label(a.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalActivities.add(db);
+    }
+    stay.setActivities(finalActivities);
+
+    // -------- MEALS --------
+    List<Meal> finalMeals = new ArrayList<>();
+    for (Meal m : stay.getMeals()) {
+        Meal db;
+
+        if (m.getId() != null) {
+            db = mealRepo.findById(m.getId())
+                    .orElseThrow(() -> new RuntimeException("Meal not found: " + m.getId()));
+        } else {
+            db = Meal.builder()
+                    .label(m.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalMeals.add(db);
+    }
+    stay.setMeals(finalMeals);
+
+    // -------- LEARNING SKILLS --------
+    List<LearningSkill> finalSkills = new ArrayList<>();
+    for (LearningSkill s : stay.getLearningSkills()) {
+        LearningSkill db;
+
+        if (s.getId() != null) {
+            db = skillRepo.findById(s.getId())
+                    .orElseThrow(() -> new RuntimeException("Skill not found: " + s.getId()));
+        } else {
+            db = LearningSkill.builder()
+                    .label(s.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalSkills.add(db);
+    }
+    stay.setLearningSkills(finalSkills);
+
+    // -------- ACCOMMODATIONS --------
+    List<Accomodation> finalAcc = new ArrayList<>();
+    for (Accomodation ac : stay.getAccomodations()) {
+        Accomodation db;
+
+        if (ac.getId() != null) {
+            db = accomodationRepo.findById(ac.getId())
+                    .orElseThrow(() -> new RuntimeException("Accommodation not found: " + ac.getId()));
+        } else {
+            db = Accomodation.builder()
+                    .label(ac.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalAcc.add(db);
+    }
+    stay.setAccomodations(finalAcc);
+
+    return stayRepository.save(stay);
+}
+
 
     public Stay getStayById(Long id) {
         return stayRepository.findById(id)

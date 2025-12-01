@@ -15,64 +15,60 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woofwoof.bookingservice.dto.BookingCreateDTO;
 import com.woofwoof.bookingservice.dto.BookingDTO;
-import com.woofwoof.bookingservice.entity.Booking;
 import com.woofwoof.bookingservice.entity.BookingStatus;
-import com.woofwoof.bookingservice.repository.BookingRepository;
 import com.woofwoof.bookingservice.service.BookingService;
 
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {
 
-    private BookingService bookingService;
-    private BookingRepository bookingRepository;
+    private final BookingService bookingService;
 
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
+    /** GET all bookings */
     @GetMapping
     public ResponseEntity<List<BookingDTO>> getAllBookings() {
-        List<BookingDTO> bookings = bookingService.getAllBookings();
-        return ResponseEntity.ok(bookings);
+        return ResponseEntity.ok(bookingService.getAllBookings());
     }
 
+    /** GET booking by id */
     @GetMapping("/{id}")
     public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long id) {
-        BookingDTO booking = bookingService.getBookingById(id);
-        return ResponseEntity.ok(booking);
+        return ResponseEntity.ok(bookingService.getBookingById(id));
     }
 
+    /** POST create booking */
     @PostMapping
     public ResponseEntity<BookingDTO> createBooking(@RequestBody @Validated BookingCreateDTO booking) {
-        BookingDTO bookingDto = bookingService.createBooking(booking);
-        return ResponseEntity.ok(bookingDto);
+        return ResponseEntity.ok(bookingService.createBooking(booking));
     }
 
+    /** GET bookings by stayId */
     @GetMapping("/stay/{stayId}")
-    public List<Booking> getBookingsByStayId(@PathVariable Long stayId) {
-        return bookingRepository.findByStayId(stayId);
+    public ResponseEntity<List<BookingDTO>> getBookingsByStayId(@PathVariable Long stayId) {
+        return ResponseEntity.ok(bookingService.getBookingsByStayId(stayId));
     }
 
+    /** GET bookings by userId */
     @GetMapping("/user/{userId}")
-    public List<Booking> getBookingsByUserId(@PathVariable UUID userId) {
-        return bookingRepository.findByUserId(userId);
+    public ResponseEntity<List<BookingDTO>> getBookingsByUserId(@PathVariable UUID userId) {
+        return ResponseEntity.ok(bookingService.getBookingsByUserId(userId));
     }
 
+    /** PATCH accept booking */
     @PatchMapping("/accept/{id}")
-    public Booking acceptBooking(@PathVariable Long id) {
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found with id " + id));
-        booking.setStatus(BookingStatus.ACCEPTED);
-        return bookingRepository.save(booking);
+    public ResponseEntity<BookingDTO> acceptBooking(@PathVariable Long id) {
+        bookingService.updateBookingStatus(id, BookingStatus.ACCEPTED);
+        return ResponseEntity.ok(bookingService.getBookingById(id));
     }
 
+    /** PATCH reject booking */
     @PatchMapping("/reject/{id}")
-    public Booking rejectBooking(@PathVariable Long id) {
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found with id " + id));
-        booking.setStatus(BookingStatus.REJECTED);
-        return bookingRepository.save(booking);
+    public ResponseEntity<BookingDTO> rejectBooking(@PathVariable Long id) {
+        bookingService.updateBookingStatus(id, BookingStatus.REJECTED);
+        return ResponseEntity.ok(bookingService.getBookingById(id));
     }
-
 }
