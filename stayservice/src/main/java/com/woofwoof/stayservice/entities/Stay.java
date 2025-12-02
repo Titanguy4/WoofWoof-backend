@@ -8,11 +8,11 @@ import com.woofwoof.stayservice.entities.subclass.Accomodation;
 import com.woofwoof.stayservice.entities.subclass.Activity;
 import com.woofwoof.stayservice.entities.subclass.LearningSkill;
 import com.woofwoof.stayservice.entities.subclass.Meal;
-import jakarta.persistence.EnumType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -44,7 +44,7 @@ public class Stay {
     private StayType type;
 
     @Column(nullable = false)
-    private Long[] localisation;
+    private Double[] localisation;
 
     @Column
     private String department;
@@ -58,6 +58,9 @@ public class Stay {
     @Column(nullable = false)
     private UUID wooferId;
 
+
+    @Column
+    private String wooferName;
 
     @OneToMany(mappedBy = "stay", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
@@ -78,14 +81,6 @@ public class Stay {
     @OneToMany(mappedBy = "stay", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
-
-    /*
-     * @OneToMany(mappedBy = "stay", cascade = CascadeType.ALL, orphanRemoval =
-     * true)
-     * 
-     * @Column(nullable = false)
-     * private List<Long> photoId;
-     */
 
     public void addAccommodation(Accomodation accomodation) {
         accomodations.add(accomodation);
@@ -136,15 +131,4 @@ public class Stay {
         reviews.remove(review);
         review.setStay(null);
     }
-
-    /*
-     * /
-     * public void addPhotoId(Long photoId) {
-     * this.photoId.add(photoId);
-     * }
-     * 
-     * public void removePhotoId(Long photoId) {
-     * this.photoId.remove(photoId);
-     * }
-     */
 }

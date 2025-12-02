@@ -1,7 +1,9 @@
 package com.woofwoof.stayservice.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import com.woofwoof.stayservice.repositories.subclass.AccomodationRepository;
 import com.woofwoof.stayservice.repositories.subclass.ActivityRepository;
 import com.woofwoof.stayservice.repositories.subclass.LearningSkillRepository;
 import com.woofwoof.stayservice.repositories.subclass.MealRepository;
+import com.woofwoof.stayservice.utils.GeoUtils;
 
 @Service
 public class StayService {
@@ -46,76 +49,109 @@ public class StayService {
 
     public Stay createStay(Stay stay) {
 
-        if (stay.getTitle() == null || stay.getTitle().isEmpty()) {
-            throw new IllegalArgumentException("Stay title cannot be null or empty");
+    if (stay.getTitle() == null || stay.getTitle().isEmpty())
+        throw new IllegalArgumentException("Stay title cannot be null or empty");
+
+    // --- Auto-fill department & region if coordinates present ---
+    if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
+
+        double lat = stay.getLocalisation()[0];
+        double lon = stay.getLocalisation()[1];
+
+        var info = geocodingService.getLocationInfo(lat, lon);
+
+        if (stay.getDepartment() == null || stay.getDepartment().isEmpty()) {
+            stay.setDepartment(info.getDepartment());
         }
-
-        // UUID woofer ID – envoyé par le frontend
-        UUID wooferId = stay.getWooferId();
-        if (wooferId == null) {
-            throw new IllegalArgumentException("WooferId cannot be null");
+        if (stay.getRegion() == null || stay.getRegion().isEmpty()) {
+            stay.setRegion(info.getRegion());
         }
-
-        if (stayRepository.existsByWooferId(wooferId)) {
-            throw new IllegalArgumentException("User already has a stay");
-        }
-
-        // Géocoding
-        if (stay.getLocalisation() != null && stay.getLocalisation().length == 2) {
-
-            double lat = stay.getLocalisation()[0]; // JSON = [lat, lon]
-            double lon = stay.getLocalisation()[1];
-
-            var info = geocodingService.getLocationInfo(lat, lon);
-
-            if (info != null) {
-                stay.setDepartment(info.getDepartment());
-                stay.setRegion(info.getRegion());
-            }
-        }
-
-        // Activities
-        List<Activity> finalActivities = new ArrayList<>();
-        for (Activity a : stay.getActivities()) {
-            Activity db = activityRepo.findById(a.getId())
-                    .orElseThrow(() -> new RuntimeException("Activity not found: " + a.getId()));
-            db.setStay(stay);
-            finalActivities.add(db);
-        }
-        stay.setActivities(finalActivities);
-
-        // Meals
-        List<Meal> finalMeals = new ArrayList<>();
-        for (Meal m : stay.getMeals()) {
-            Meal db = mealRepo.findById(m.getId())
-                    .orElseThrow(() -> new RuntimeException("Meal not found: " + m.getId()));
-            db.setStay(stay);
-            finalMeals.add(db);
-        }
-        stay.setMeals(finalMeals);
-
-        // Learning Skills
-        List<LearningSkill> finalSkills = new ArrayList<>();
-        for (LearningSkill s : stay.getLearningSkills()) {
-            LearningSkill db = skillRepo.findById(s.getId())
-                    .orElseThrow(() -> new RuntimeException("Skill not found: " + s.getId()));
-            db.setStay(stay);
-            finalSkills.add(db);
-        }
-        stay.setLearningSkills(finalSkills);
-
-        // Accomodations
-        List<Accomodation> finalAcc = new ArrayList<>();
-        for (Accomodation ac : stay.getAccomodations()) {
-            Accomodation db = accomodationRepo.findById(ac.getId())
-                    .orElseThrow(() -> new RuntimeException("Accomodation not found: " + ac.getId()));
-            db.setStay(stay);
-            finalAcc.add(db);
-        }
-        stay.setAccomodations(finalAcc);
-
-        return stayRepository.save(stay);
     }
+
+    // -------- ACTIVITIES --------
+    List<Activity> finalActivities = new ArrayList<>();
+    for (Activity a : stay.getActivities()) {
+        Activity db;
+
+        if (a.getId() != null) {
+            db = activityRepo.findById(a.getId())
+                    .orElseThrow(() -> new RuntimeException("Activity not found: " + a.getId()));
+        } else {
+            // create new
+            db = Activity.builder()
+                    .label(a.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalActivities.add(db);
+    }
+    stay.setActivities(finalActivities);
+
+    // -------- MEALS --------
+    List<Meal> finalMeals = new ArrayList<>();
+    for (Meal m : stay.getMeals()) {
+        Meal db;
+
+        if (m.getId() != null) {
+            db = mealRepo.findById(m.getId())
+                    .orElseThrow(() -> new RuntimeException("Meal not found: " + m.getId()));
+        } else {
+            db = Meal.builder()
+                    .label(m.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalMeals.add(db);
+    }
+    stay.setMeals(finalMeals);
+
+    // -------- LEARNING SKILLS --------
+    List<LearningSkill> finalSkills = new ArrayList<>();
+    for (LearningSkill s : stay.getLearningSkills()) {
+        LearningSkill db;
+
+        if (s.getId() != null) {
+            db = skillRepo.findById(s.getId())
+                    .orElseThrow(() -> new RuntimeException("Skill not found: " + s.getId()));
+        } else {
+            db = LearningSkill.builder()
+                    .label(s.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalSkills.add(db);
+    }
+    stay.setLearningSkills(finalSkills);
+
+    // -------- ACCOMMODATIONS --------
+    List<Accomodation> finalAcc = new ArrayList<>();
+    for (Accomodation ac : stay.getAccomodations()) {
+        Accomodation db;
+
+        if (ac.getId() != null) {
+            db = accomodationRepo.findById(ac.getId())
+                    .orElseThrow(() -> new RuntimeException("Accommodation not found: " + ac.getId()));
+        } else {
+            db = Accomodation.builder()
+                    .label(ac.getLabel())
+                    .stay(stay)
+                    .build();
+        }
+
+        db.setStay(stay);
+        finalAcc.add(db);
+    }
+    stay.setAccomodations(finalAcc);
+
+    return stayRepository.save(stay);
+}
+
 
     public Stay getStayById(Long id) {
         return stayRepository.findById(id)
@@ -162,4 +198,39 @@ public class StayService {
                 .orElseThrow(() -> new RuntimeException("Stay not found"));
         return stay.getReviews();
     }
+
+    public List<Long> getStayIdsByWooferId(UUID wooferId) {
+        return stayRepository.findByWooferId(wooferId)
+                .stream()
+                .map(Stay::getId)
+                .toList();
+    }
+
+    /**
+     * Permit to find all stays around a point (latitude, longitude)
+     * A limit is define in case of http request to limit the flux
+     * 
+     * @param region
+     * @param stepLat
+     * @param stepLon
+     * @param limit
+     * @return List of the stays in the region provided
+     */
+    public List<Stay> findStaysAroundStep(String region, double stepLat, double stepLon, int limit) {
+        List<Stay> candidates = stayRepository.findByRegion(region);
+
+        return candidates.stream()
+                .sorted(Comparator.comparingDouble(stay -> {
+                    if (stay.getLocalisation() == null || stay.getLocalisation().length < 2)
+                        return Double.MAX_VALUE;
+
+                    return GeoUtils.distance(
+                            stepLat, stepLon,
+                            stay.getLocalisation()[0],
+                            stay.getLocalisation()[1]);
+                }))
+                .limit(limit)
+                .toList();
+    }
+
 }

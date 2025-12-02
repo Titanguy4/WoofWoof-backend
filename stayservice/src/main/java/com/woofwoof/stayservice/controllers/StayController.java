@@ -1,6 +1,7 @@
 package com.woofwoof.stayservice.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woofwoof.stayservice.entities.Stay;
@@ -43,12 +45,28 @@ public class StayController {
     }
 
     @PutMapping("/{id}")
-    public Stay updateStay(@RequestBody Stay updatedStay, @PathVariable Long id) {
+    public Stay updateStay(@RequestBody Stay updatedStay, @PathVariable UUID id) {
         return stayService.updateStay(updatedStay);
     }
 
     @DeleteMapping("/{id}")
     public void deleteStay(@PathVariable Long id) {
         stayService.deleteStay(id);
+    }
+
+    @GetMapping("/woofer/{wooferId}/ids")
+    public List<Long> getStayIdsByWoofer(@PathVariable UUID wooferId) {
+        return stayService.getStayIdsByWooferId(wooferId);
+    }
+
+    // Controllers for woofplanner
+
+    @GetMapping("/search/proximity")
+    public List<Stay> getStaysByProximity(
+            @RequestParam String region,
+            @RequestParam double lat,
+            @RequestParam double lon,
+            @RequestParam(defaultValue = "10") int limit) {
+        return stayService.findStaysAroundStep(region, lat, lon, limit);
     }
 }
