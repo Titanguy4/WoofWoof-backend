@@ -89,8 +89,6 @@ services:
   mediaservice-db:
     image: postgres:15-alpine
     container_name: media-service-postgres
-    env_file:
-      - ./.env
     environment:
       POSTGRES_DB: ${MEDIA_SERVICE_DB}
       POSTGRES_USER: ${MEDIA_SERVICE_USER}

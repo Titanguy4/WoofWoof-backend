@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Stay {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
@@ -58,7 +58,6 @@ public class Stay {
     @Column(nullable = false)
     private UUID wooferId;
 
-    private Long bookingId;
 
     @Column
     private String wooferName;

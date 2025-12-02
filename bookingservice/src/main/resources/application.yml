@@ -41,3 +41,7 @@ logging:
     "[org.hibernate]": WARN
     "[org.hibernate.sql]": DEBUG
     "[org.hibernate.type.descriptor.sql]": TRACE
+
+stripe:
+  secret-key: ${STRIPE_API_KEY:}
+  public-key: ${STRIPE_PUBLIC_KEY:}

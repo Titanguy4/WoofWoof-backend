@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class StayService {
             MealRepository mealRepo,
             LearningSkillRepository skillRepo,
             AccomodationRepository accomodationRepo) {
+
         this.stayRepository = stayRepository;
         this.geocodingService = geocodingService;
         this.activityRepo = activityRepo;
@@ -163,9 +165,8 @@ public class StayService {
     public Stay updateStay(Stay stay) {
         if (!stayRepository.existsById(stay.getId())) {
             throw new RuntimeException("Stay with id " + stay.getId() + " does not exist.");
-        } else {
-            return stayRepository.save(stay);
         }
+        return stayRepository.save(stay);
     }
 
     public List<Meal> getMealsById(Long id) {
