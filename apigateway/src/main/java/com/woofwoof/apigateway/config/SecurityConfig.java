@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.server.resource.authentication.Delega
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -41,9 +42,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        // Pour l'instant je permit tous mais à vous d'ajouter vos endpoints
-                        // .requestMatchers("/stays/**").hasRole("BACKPACKER")
-                        .anyRequest().permitAll())
+                        // Routes publiques du stay-service uniquement pour GET
+                        .requestMatchers(HttpMethod.GET, "/stays", "/stays/*").permitAll()
+                        // media-service : GET publics
+                        .requestMatchers(HttpMethod.GET, "/medias", "/medias/**").permitAll()
+                        // Toutes les autres routes nécessitent authentification
+                        .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(jwtDecoder())
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())));
