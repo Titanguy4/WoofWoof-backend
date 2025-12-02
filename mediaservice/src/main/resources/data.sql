@@ -34,4 +34,5 @@ VALUES
 ('https://cdn.sanity.io/images/ruord509/production/99557dcb62ec6893ed376a0552c1e738dd223a72-2121x1414.jpg?w=3840&q=75&fit=clip&auto=format', CURRENT_DATE, 'WOOFSHARE_PHOTO', 3, NULL),
 ('https://images.prismic.io/conservation/f82dfa8a-ced6-44c4-9701-5dbab1a8b5ea_Rehab+Student+Feeding+Giraffe+Landscape+website+advert.jpg?auto=compress,format&rect=0,0,4928,2957&w=1000&h=600', CURRENT_DATE, 'WOOFSHARE_PHOTO', 4, NULL),
 ('https://base-prod.rspb-prod.magnolia-platform.com/.imaging/focalpoint/_WIDTH_x_HEIGHT_/dam/jcr:99683451-80f8-43ab-af2c-cac4ff276416/1101307937-People-man-and-boy-planting-tree.jpg.png', CURRENT_DATE, 'WOOFSHARE_PHOTO', 6, NULL),
-('https://www.beachsoul.com.au/cdn/shop/articles/BEACH-CLEAN-UP-Beach-Soul-Portable-Beach-Shower-Camping-Shower_7.jpg?v=1723606086', CURRENT_DATE, 'WOOFSHARE_PHOTO', 5, NULL);
+('https://www.beachsoul.com.au/cdn/shop/articles/BEACH-CLEAN-UP-Beach-Soul-Portable-Beach-Shower-Camping-Shower_7.jpg?v=1723606086', CURRENT_DATE, 'WOOFSHARE_PHOTO', 5, NULL),
+('https://stmaaprodfwsite.blob.core.windows.net/assets/sites/1/2020/07/DairyFarmWorker_220777216_F_C_EUGENI_FOTO_AdobeStock.jpg', CURRENT_DATE, 'WOOFSHARE_PHOTO', 1, NULL);
