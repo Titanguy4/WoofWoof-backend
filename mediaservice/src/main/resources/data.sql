@@ -31,7 +31,7 @@ INSERT INTO media (url, post_date, media_type, stay_id, user_id)
 VALUES
 ('https://media.istockphoto.com/id/1167866977/fr/photo/vieux-bâtiments-de-ferme.jpg?s=612x612&w=0&k=20&c=eUTW0xTOQVgDDIpIUx9cOBh_5rU-LXVexqK34KuK4a8=', CURRENT_DATE, 'WOOFSHARE_PHOTO', 1, NULL),
 ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/fb/fd/14/caption.jpg?w=1200&h=-1&s=1', CURRENT_DATE, 'WOOFSHARE_PHOTO', 2, NULL),
-('https://img1.wsimg.com/isteam/ip/ebdcf515-e5a0-42e0-b0a6-8e9e3187cb79/05142024IMG_7970-386eba3.jpg', CURRENT_DATE, 'WOOFSHARE_PHOTO', 3, NULL),
-('https://cdn.trendhunterstatic.com/thumbs/559/goa-agricultural-policies.jpeg', CURRENT_DATE, 'WOOFSHARE_PHOTO', 4, NULL),
-('https://www.vitalac.eu/sites/default/files/styles/phablet/public/2022-02/bovin-lait_tarie_veau_min.jpg?itok=T4OYn4io', CURRENT_DATE, 'WOOFSHARE_PHOTO', 5, NULL),
-('https://www.beachsoul.com.au/cdn/shop/articles/BEACH-CLEAN-UP-Beach-Soul-Portable-Beach-Shower-Camping-Shower_7.jpg?v=1723606086', CURRENT_DATE, 'WOOFSHARE_PHOTO', 6, NULL);
+('https://cdn.sanity.io/images/ruord509/production/99557dcb62ec6893ed376a0552c1e738dd223a72-2121x1414.jpg?w=3840&q=75&fit=clip&auto=format', CURRENT_DATE, 'WOOFSHARE_PHOTO', 3, NULL),
+('https://images.prismic.io/conservation/f82dfa8a-ced6-44c4-9701-5dbab1a8b5ea_Rehab+Student+Feeding+Giraffe+Landscape+website+advert.jpg?auto=compress,format&rect=0,0,4928,2957&w=1000&h=600', CURRENT_DATE, 'WOOFSHARE_PHOTO', 4, NULL),
+('https://base-prod.rspb-prod.magnolia-platform.com/.imaging/focalpoint/_WIDTH_x_HEIGHT_/dam/jcr:99683451-80f8-43ab-af2c-cac4ff276416/1101307937-People-man-and-boy-planting-tree.jpg.png', CURRENT_DATE, 'WOOFSHARE_PHOTO', 6, NULL),
+('https://www.beachsoul.com.au/cdn/shop/articles/BEACH-CLEAN-UP-Beach-Soul-Portable-Beach-Shower-Camping-Shower_7.jpg?v=1723606086', CURRENT_DATE, 'WOOFSHARE_PHOTO', 5, NULL);
