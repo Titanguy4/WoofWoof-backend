@@ -51,7 +51,7 @@ class StayServiceTest {
     void createStay_setsDepartmentAndRegion_whenLocalisationProvided() {
         Stay stay = new Stay();
         stay.setTitle("Test stay");
-        stay.setLocalisation(new Long[]{48L, 2L});
+        stay.setLocalisation(new Double[]{48.0, 2.0});
         stay.setWooferId(UUID.randomUUID());
 
         stay.setActivities(List.of());
