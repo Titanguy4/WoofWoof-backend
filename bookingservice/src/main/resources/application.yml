@@ -37,3 +37,6 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.springframework: info
+
+stripe:
+  secret-key: ${STRIPE_API_KEY:}

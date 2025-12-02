@@ -34,16 +34,14 @@ services:
     container_name: stay-service-dev
     ports:
       - "8081:8081"
-    env_file:
-      - ./.env
     depends_on:
       - eureka-server
       - stayservice-db
     environment:
-      STAY_SERVICE_DB_HOST: ${STAY_SERVICE_DB_HOST:-stayservice-db}
       STAY_SERVICE_DB: ${STAY_SERVICE_DB}
       STAY_SERVICE_DB_USER: ${STAY_SERVICE_DB_USER}
       STAY_SERVICE_DB_PASSWORD: ${STAY_SERVICE_DB_PASSWORD}
+      STAY_SERVICE_DB_HOST: ${STAY_SERVICE_DB_HOST}
       STAY_SERVICE_DB_PORT: ${STAY_SERVICE_DB_PORT}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
@@ -69,8 +67,13 @@ services:
       context: ./bookingservice
       dockerfile: Dockerfile
     container_name: booking-service-dev
-    env_file:
-      - ./.env
+    environment:
+      BOOKING_SERVICE_DB: ${BOOKING_SERVICE_DB}
+      BOOKING_SERVICE_DB_USER: ${BOOKING_SERVICE_DB_USER}
+      BOOKING_SERVICE_DB_PASSWORD: ${BOOKING_SERVICE_DB_PASSWORD}
+      BOOKING_SERVICE_DB_HOST: bookingservice-db
+      BOOKING_SERVICE_DB_PORT: ${BOOKING_SERVICE_DB_PORT}
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
     ports:
       - "8082:8082"
     depends_on:
@@ -102,16 +105,15 @@ services:
     container_name: media-service-dev
     ports:
       - "${MEDIA_SERVICE_PORT}:8083"
-    env_file:
-      - ./.env
     depends_on:
       - eureka-server
       - mediaservice-db
     environment:
-      MEDIA_SERVICE_DB_HOST: ${MEDIA_SERVICE_DB_HOST}
       MEDIA_SERVICE_DB: ${MEDIA_SERVICE_DB}
       MEDIA_SERVICE_USER: ${MEDIA_SERVICE_USER}
       MEDIA_SERVICE_PASSWORD: ${MEDIA_SERVICE_PASSWORD}
+      MEDIA_SERVICE_DB_HOST: ${MEDIA_SERVICE_DB_HOST}
+      MEDIA_SERVICE_DB_PORT: ${MEDIA_SERVICE_DB_PORT}
       MEDIA_SERVICE_PORT: ${MEDIA_SERVICE_PORT}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     networks:
@@ -120,8 +122,6 @@ services:
   mediaservice-db:
     image: postgres:15-alpine
     container_name: media-service-postgres
-    env_file:
-      - ./.env
     environment:
       POSTGRES_DB: ${MEDIA_SERVICE_DB}
       POSTGRES_USER: ${MEDIA_SERVICE_USER}
@@ -138,8 +138,6 @@ services:
     image: quay.io/keycloak/keycloak:25.0.0
     container_name: keycloak
     command: start-dev --import-realm
-    env_file:
-      - ./.env
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: keycloak-db
@@ -160,8 +158,6 @@ services:
     image: postgres:15-alpine
     container_name: keycloak-postgres
     restart: unless-stopped
-    env_file:
-      - ./.env
     environment:
       POSTGRES_DB: ${KEYCLOAK_DB}
       POSTGRES_USER: ${KEYCLOAK_DB_USER}

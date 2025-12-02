@@ -21,8 +21,6 @@ public interface StayRepository extends JpaRepository<Stay, Long> {
 
     Stay findByWooferId(UUID wooferId);
 
-    Stay findByBookingId(Long bookingId);
-
     boolean existsByWooferId(UUID wooferId);
 
 }
