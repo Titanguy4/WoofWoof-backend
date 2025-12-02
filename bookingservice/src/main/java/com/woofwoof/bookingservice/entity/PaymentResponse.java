@@ -1,4 +1,4 @@
-package com.woofwoof.bookingservice.model;
+package com.woofwoof.bookingservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

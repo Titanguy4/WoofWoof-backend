@@ -44,3 +44,4 @@ logging:
 
 stripe:
   secret-key: ${STRIPE_API_KEY:}
+  public-key: ${STRIPE_PUBLIC_KEY:}
