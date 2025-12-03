@@ -5,10 +5,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import com.woofwoof.bookingservice.service.KafkaLogService;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,9 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
+        private KafkaLogService logger;
+
+        public GlobalExceptionHandler(KafkaLogService logger) {
+                this.logger = logger;
+        }
+
         @ExceptionHandler(EntityNotFoundException.class)
         public ResponseEntity<ApiError> handleNotFound(EntityNotFoundException e, HttpServletRequest req) {
-                log.debug("Erreur l'entité n'existe pas");
+                logger.sendLog("WARN", "Erreur l'entité n'existe pas");
 
                 ApiError error = new ApiError(
                                 LocalDateTime.now(),
@@ -43,7 +52,7 @@ public class GlobalExceptionHandler {
                                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                                 .collect(Collectors.joining(", "));
 
-                log.debug("Erreur de validation : {}", errorMessage);
+                logger.sendLog("INFO", String.format("Erreur de validation : %s", errorMessage));
 
                 ApiError error = new ApiError(
                                 LocalDateTime.now(),
@@ -60,15 +69,21 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(MethodArgumentTypeMismatchException.class)
         public ResponseEntity<ApiError> handleTypeMismatch(MethodArgumentTypeMismatchException ex,
                         HttpServletRequest req) {
-                log.debug("Erreur de type dans l'URL : attendu {}, reçu {}", ex.getRequiredType().getSimpleName(),
-                                ex.getValue());
+                Class<?> requiredClass = ex.getRequiredType();
+                String requiredType = requiredClass != null ? requiredClass.getSimpleName() : "inconnu";
+                String value = String.valueOf(ex.getValue());
+
+                logger.sendLog("INFO",
+                                String.format("Erreur de type dans l'URL : attendu %s, reçu %s",
+                                                requiredType,
+                                                value));
 
                 ApiError error = new ApiError(
                                 LocalDateTime.now(),
                                 HttpStatus.BAD_REQUEST.value(),
                                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                                 "Le paramètre '" + ex.getName() + "' doit être de type "
-                                                + ex.getRequiredType().getSimpleName(),
+                                                + requiredType,
                                 req.getRequestURI());
 
                 return ResponseEntity
@@ -80,7 +95,7 @@ public class GlobalExceptionHandler {
         public ResponseEntity<ApiError> handleIllegalArgument(
                         IllegalArgumentException ex,
                         HttpServletRequest req) {
-                log.debug("Erreur d'argument : {}", ex.getMessage());
+                logger.sendLog("INFO", String.format("Erreur d'argument : %s", ex.getMessage()));
 
                 ApiError error = new ApiError(
                                 LocalDateTime.now(),
@@ -94,26 +109,26 @@ public class GlobalExceptionHandler {
                                 .body(error);
         }
 
-        @ExceptionHandler(BookingUnavailableException.class)
-        public ResponseEntity<ApiError> handleBookingUnavailable(BookingUnavailableException ex,
+        @ExceptionHandler(HttpMessageNotReadableException.class)
+        public ResponseEntity<ApiError> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                         HttpServletRequest req) {
-                log.debug("Le booking n'est pas disponible pour le stay", ex.getMessage());
+                logger.sendLog("INFO", "Erreur de lecture du JSON : " + ex.getMessage());
 
                 ApiError error = new ApiError(
                                 LocalDateTime.now(),
-                                HttpStatus.CONFLICT.value(),
-                                HttpStatus.CONFLICT.getReasonPhrase(),
-                                ex.getMessage(),
+                                HttpStatus.BAD_REQUEST.value(),
+                                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                                "Format de requête invalide (JSON malformé ou type de donnée incorrect)",
                                 req.getRequestURI());
 
                 return ResponseEntity
-                                .status(HttpStatus.CONFLICT)
+                                .status(HttpStatus.BAD_REQUEST)
                                 .body(error);
         }
 
         @ExceptionHandler(Exception.class)
         public ResponseEntity<ApiError> handleGlobalError(Exception e, HttpServletRequest req) {
-                log.error("Erreur interne au server lors d'un booking", e);
+                logger.sendLog("WARN", String.format("Erreur interne au server lors d'un booking : %s", e));
                 ApiError error = new ApiError(
                                 LocalDateTime.now(),
                                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
