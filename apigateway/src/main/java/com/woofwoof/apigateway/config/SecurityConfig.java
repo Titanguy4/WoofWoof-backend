@@ -45,6 +45,7 @@ public class SecurityConfig {
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http, KafkaLogService kafkaLogService) throws Exception {
                 http
+                                .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(authorize -> authorize
                                                 // Pour l'instant je permit tous mais à vous d'ajouter vos endpoints
                                                 // .requestMatchers("/stays/**").hasRole("BACKPACKER")
