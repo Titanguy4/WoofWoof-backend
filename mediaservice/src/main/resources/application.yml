@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: media-service
+
+  datasource:
+    url: jdbc:postgresql://${MEDIA_SERVICE_DB_HOST:mediaservice-db}:5432/${MEDIA_SERVICE_DB:mediaservice}
+    username: ${MEDIA_SERVICE_USER:mediauser}
+    password: ${MEDIA_SERVICE_PASSWORD:mediapass}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+server:
+  port: ${MEDIA_SERVICE_PORT:8083}
+
+eureka:
+  instance:
+    hostname: media-service
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.springframework: info

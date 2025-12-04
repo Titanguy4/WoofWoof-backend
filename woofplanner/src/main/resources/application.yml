@@ -1,0 +1,44 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: woofplanner
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+application:
+  config:
+    stay-service-url: http://localhost:8081
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    root: WARN
+    "[com.woofwoof.woofplanner]": DEBUG
+    "[org.springframework.web]": WARN
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+application:
+  config:
+    stay-service-url: http://stay-service:8081
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
