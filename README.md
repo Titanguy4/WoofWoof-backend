@@ -1,25 +1,14 @@
 # WoofWoof-backend
 
-## Setup Keycloak
+## Ajouter le fichier .env
 
-Go to http://localhost:8000 on your browser
-
-Then login with
-
-- Username : admin
-- Password : admin
-
-The WoofWoof realm is automaticly create with basics clients, users and roles.
-
-!! But you must link users to their roles woofer and backpacker.
-
-!! And assign password not temporary to each users
-
-!! Disable refresh token in the client expo-client settings
+N'oubliez pas d'ajouter le fichier `.env` avec les credentials à la racine du projet.
 
 ## Setup avec Docker Compose
 
-### Commandes disponibles
+Pour pouvoir lancer tous les microservices vous pouvez utiliser nos commandes make ou utiliser docker compose, si vous ne disposez pas de l'outil make
+
+### Commandes disponibles avec make
 
 Pour voir toutes les commandes disponibles, tapez :
 
@@ -49,36 +38,29 @@ WoofWoof Backend - Commandes Docker Compose
   stop-services        Arrete uniquement les services metier (garde l'infra)
 ```
 
-### Exemples d'utilisation
+### Lancer tous les services
 
 **Demarrage rapide :**
 
-```bash
-# Lancer l'infrastructure uniquement
-make infra
-
+```
 # Lancer tous les services
 make all
 ```
 
-**Developpement sur un service :**
+## Configuration de Keycloak
 
-```bash
-# Exemple : travailler sur woofplanner en local
-make dev-woofplanner
-cd woofplanner && mvn spring-boot:run
-```
+Accédez à http://localhost:8000 dans votre navigateur
 
-## Configuration des profils Spring
+Puis connectez-vous avec :
 
-Les services utilisent deux configurations :
+- Nom d'utilisateur : admin
+- Mot de passe : admin
 
-- **Par defaut (local)** : Se connecte a `localhost`
-- **Profil docker** : Se connecte aux containers Docker
+Le realm WoofWoof est automatiquement créé avec les clients, utilisateurs et rôles de base.
 
-Le profil est automatiquement active selon l'environnement d'execution.
+!! Mais vous devez lier les utilisateurs à leurs rôles woofer et backpacker.
 
-## Notes
+!! Et attribuer un mot de passe non temporaire à chaque utilisateur.
 
-- N'oubliez pas de remplir le fichier `.env` avec les credentials
-- Pour ajouter un nouveau microservice, modifiez `docker-compose.yml` et ajoutez un Dockerfile
+!! Désactiver le refresh token dans les paramètres avancés du client expo-client.
+![alt text](image.png)

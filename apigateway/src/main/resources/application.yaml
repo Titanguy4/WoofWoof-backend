@@ -30,6 +30,8 @@ spring:
         jwt:
           jwk-set-uri: http://keycloak:8080/realms/WoofWoof/protocol/openid-connect/certs
           issuer-uri: http://localhost:8000/realms/WoofWoof
+  kafka:
+    bootstrap-servers: localhost:29092
 
 server:
   port: 8080
@@ -47,3 +49,13 @@ logging:
   level:
     "[org.springframework.security]": DEBUG
     "[org.springframework.security.oauth2.core.web]": DEBUG
+
+---
+spring:
+  profiles:
+    active:
+      - docker
+
+  kafka:
+    bootstrap-servers:
+      - kafka:9092

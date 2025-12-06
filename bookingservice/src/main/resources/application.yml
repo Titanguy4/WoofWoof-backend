@@ -17,6 +17,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
       defer-datasource-initialization: true
 
+  kafka:
+    bootstrap-servers:
+      - kafka:9092
+
   output:
     ansi:
       enabled: ALWAYS
