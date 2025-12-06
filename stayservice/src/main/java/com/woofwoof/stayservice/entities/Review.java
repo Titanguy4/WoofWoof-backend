@@ -27,6 +27,10 @@ public class Review {
     @Column(name = "id_review")
     private Long id;
 
+    private String name;
+
+    private String country;
+
     private Long rating;
 
     private Date date;
