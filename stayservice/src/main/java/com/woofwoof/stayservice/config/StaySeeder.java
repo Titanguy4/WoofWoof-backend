@@ -1,5 +1,6 @@
 package com.woofwoof.stayservice.config;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -138,7 +139,30 @@ public class StaySeeder implements CommandLineRunner {
                 stay.addMeal(Meal.builder().label("Lunch").stay(stay).build());
 
                 // Review
-                stay.addReview(Review.builder().rating(5L).stay(stay).build());
+                // Reviews
+                stay.addReview(Review.builder()
+                                .name("Anna")
+                                .country("Germany")
+                                .rating(5L)
+                                .date(java.sql.Date.valueOf(LocalDate.of(2024, 1, 12)))
+                                .content("Amazing experience! The host was very welcoming and the tasks were enjoyable.")
+                                .build());
+
+                stay.addReview(Review.builder()
+                                .name("Lucas")
+                                .country("France")
+                                .rating(4L)
+                                .date(java.sql.Date.valueOf(LocalDate.of(2024, 2, 8)))
+                                .content("Great stay overall. The food was delicious and the place was quiet.")
+                                .build());
+
+                stay.addReview(Review.builder()
+                                .name("Maria")
+                                .country("Spain")
+                                .rating(5L)
+                                .date(java.sql.Date.valueOf(LocalDate.of(2024, 3, 20)))
+                                .content("Loved every moment! Learned a lot and met amazing people.")
+                                .build());
 
                 stayRepository.save(stay);
 
